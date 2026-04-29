@@ -1,0 +1,12 @@
+target/
+bin/
+.settings/
+.classpath
+.project
+.factorypath
+*.log
+*.tmp
+*.jar
+*.war
+*.ear
+.DS_Store
