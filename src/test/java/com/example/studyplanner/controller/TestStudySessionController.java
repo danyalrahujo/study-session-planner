@@ -39,4 +39,12 @@ public class TestStudySessionController {
 
 		org.junit.Assert.assertEquals(2, studySessions.size());
 	}
+
+	@Test
+	public void testDeleteStudySession() {
+
+		studySessionController.deleteStudySession("1");
+
+		verify(studySessionRepository).delete("1");
+	}
 }
