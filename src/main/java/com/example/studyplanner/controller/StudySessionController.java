@@ -19,4 +19,8 @@ public class StudySessionController {
 	public List<StudySession> getAllStudySessions() {
 		return studySessionRepository.findAll();
 	}
+
+	public void deleteStudySession(String id) {
+		studySessionRepository.delete(id);
+	}
 }
