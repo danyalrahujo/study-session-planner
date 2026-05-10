@@ -1,6 +1,7 @@
 package com.example.studyplanner.controller;
 
 import com.example.studyplanner.model.StudySession;
+import java.util.List;
 import com.example.studyplanner.repository.StudySessionRepository;
 
 public class StudySessionController {
@@ -13,5 +14,9 @@ public class StudySessionController {
 
 	public void addStudySession(StudySession studySession) {
 		studySessionRepository.save(studySession);
+	}
+
+	public List<StudySession> getAllStudySessions() {
+		return studySessionRepository.findAll();
 	}
 }
