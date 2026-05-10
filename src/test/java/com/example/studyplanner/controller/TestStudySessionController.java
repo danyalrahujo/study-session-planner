@@ -27,4 +27,16 @@ public class TestStudySessionController {
 
 		verify(studySessionRepository).save(studySession);
 	}
+
+	@Test
+	public void testGetAllStudySessions() {
+
+		when(studySessionRepository.findAll())
+				.thenReturn(java.util.Arrays.asList(new StudySession("1", "Study TDD", false, "2025-05-10", null),
+						new StudySession("2", "Study Mockito", false, "2025-05-11", null)));
+
+		java.util.List<StudySession> studySessions = studySessionController.getAllStudySessions();
+
+		org.junit.Assert.assertEquals(2, studySessions.size());
+	}
 }
