@@ -71,4 +71,20 @@ public class TestStudySessionController {
 
 		org.junit.Assert.assertEquals("Study TDD", result.getDescription());
 	}
+
+	@Test
+	public void testFindStudySessionsByTag() {
+
+		Tag tag = new Tag("1", "Programming");
+
+		StudySession studySession1 = new StudySession("1", "Study Java", false, "2025-05-10", null);
+
+		StudySession studySession2 = new StudySession("2", "Study Mockito", false, "2025-05-11", null);
+
+		when(studySessionRepository.findByTag("1")).thenReturn(java.util.Arrays.asList(studySession1, studySession2));
+
+		java.util.List<StudySession> result = studySessionController.findStudySessionsByTag("1");
+
+		org.junit.Assert.assertEquals(2, result.size());
+	}
 }
