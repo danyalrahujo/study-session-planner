@@ -27,4 +27,15 @@ public class TestTagController {
 
 		verify(tagRepository).save(tag);
 	}
+
+	@Test
+	public void testGetAllTags() {
+
+		when(tagRepository.findAll())
+				.thenReturn(java.util.Arrays.asList(new Tag("1", "Programming"), new Tag("2", "Java")));
+
+		java.util.List<Tag> tags = tagController.getAllTags();
+
+		org.junit.Assert.assertEquals(2, tags.size());
+	}
 }
