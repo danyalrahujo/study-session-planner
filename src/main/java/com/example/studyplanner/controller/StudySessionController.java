@@ -23,4 +23,8 @@ public class StudySessionController {
 	public void deleteStudySession(String id) {
 		studySessionRepository.delete(id);
 	}
+
+	public void updateStudySession(StudySession studySession) {
+		studySessionRepository.update(studySession);
+	}
 }
