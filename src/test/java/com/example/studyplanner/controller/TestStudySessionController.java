@@ -101,4 +101,20 @@ public class TestStudySessionController {
 
 		org.junit.Assert.assertEquals(1, studySession.getTags().size());
 	}
+
+	@Test
+	public void testRemoveTagFromStudySession() {
+
+		Tag tag = new Tag("1", "Programming");
+
+		java.util.List<Tag> tags = new java.util.ArrayList<>();
+
+		tags.add(tag);
+
+		StudySession studySession = new StudySession("1", "Study Java", false, "2025-05-10", tags);
+
+		studySessionController.removeTagFromStudySession(studySession, tag);
+
+		org.junit.Assert.assertEquals(0, studySession.getTags().size());
+	}
 }
