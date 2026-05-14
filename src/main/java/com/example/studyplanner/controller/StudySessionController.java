@@ -40,4 +40,8 @@ public class StudySessionController {
 	public void assignTagToStudySession(StudySession studySession, Tag tag) {
 		studySession.getTags().add(tag);
 	}
+
+	public void removeTagFromStudySession(StudySession studySession, Tag tag) {
+		studySession.getTags().remove(tag);
+	}
 }
