@@ -47,4 +47,14 @@ public class TestStudySessionController {
 
 		verify(studySessionRepository).delete("1");
 	}
+
+	@Test
+	public void testUpdateStudySession() {
+
+		StudySession studySession = new StudySession("1", "Updated Study Session", false, "2025-05-10", null);
+
+		studySessionController.updateStudySession(studySession);
+
+		verify(studySessionRepository).update(studySession);
+	}
 }
