@@ -56,4 +56,18 @@ public class TestTagController {
 
 		verify(tagRepository).update(tag);
 	}
+
+	@Test
+	public void testFindTagById() {
+
+		Tag tag = new Tag("1", "Programming");
+
+		when(tagRepository.findById("1")).thenReturn(tag);
+
+		Tag result = tagController.findTagById("1");
+
+		org.junit.Assert.assertNotNull(result);
+
+		org.junit.Assert.assertEquals("Programming", result.getName());
+	}
 }
