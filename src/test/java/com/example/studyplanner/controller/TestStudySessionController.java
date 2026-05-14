@@ -57,4 +57,18 @@ public class TestStudySessionController {
 
 		verify(studySessionRepository).update(studySession);
 	}
+
+	@Test
+	public void testFindStudySessionById() {
+
+		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", null);
+
+		when(studySessionRepository.findById("1")).thenReturn(studySession);
+
+		StudySession result = studySessionController.findStudySessionById("1");
+
+		org.junit.Assert.assertNotNull(result);
+
+		org.junit.Assert.assertEquals("Study TDD", result.getDescription());
+	}
 }
