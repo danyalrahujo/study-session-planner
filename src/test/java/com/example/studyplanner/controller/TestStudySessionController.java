@@ -1,12 +1,15 @@
 package com.example.studyplanner.controller;
 
-import com.example.studyplanner.model.StudySession;
-import com.example.studyplanner.repository.StudySessionRepository;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Mockito.*;
+import com.example.studyplanner.model.StudySession;
+import com.example.studyplanner.model.Tag;
+import com.example.studyplanner.repository.StudySessionRepository;
 
 public class TestStudySessionController {
 

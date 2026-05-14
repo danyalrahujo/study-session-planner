@@ -31,4 +31,8 @@ public class StudySessionController {
 	public StudySession findStudySessionById(String id) {
 		return studySessionRepository.findById(id);
 	}
+
+	public List<StudySession> findStudySessionsByTag(String tagId) {
+		return studySessionRepository.findByTag(tagId);
+	}
 }
