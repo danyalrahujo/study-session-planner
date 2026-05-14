@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.example.studyplanner.model.StudySession;
 import com.example.studyplanner.repository.StudySessionRepository;
+import com.example.studyplanner.model.Tag;
 
 public class TestStudySessionController {
 
@@ -86,5 +87,18 @@ public class TestStudySessionController {
 		java.util.List<StudySession> result = studySessionController.findStudySessionsByTag("1");
 
 		org.junit.Assert.assertEquals(2, result.size());
+	}
+
+	@Test
+	public void testAssignTagToStudySession() {
+
+		Tag tag = new Tag("1", "Programming");
+
+		StudySession studySession = new StudySession("1", "Study Java", false, "2025-05-10",
+				new java.util.ArrayList<>());
+
+		studySessionController.assignTagToStudySession(studySession, tag);
+
+		org.junit.Assert.assertEquals(1, studySession.getTags().size());
 	}
 }
