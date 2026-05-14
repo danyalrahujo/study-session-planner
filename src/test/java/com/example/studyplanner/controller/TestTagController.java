@@ -38,4 +38,22 @@ public class TestTagController {
 
 		org.junit.Assert.assertEquals(2, tags.size());
 	}
+
+	@Test
+	public void testDeleteTag() {
+
+		tagController.deleteTag("1");
+
+		verify(tagRepository).delete("1");
+	}
+
+	@Test
+	public void testUpdateTag() {
+
+		Tag tag = new Tag("1", "Updated Tag");
+
+		tagController.updateTag(tag);
+
+		verify(tagRepository).update(tag);
+	}
 }
