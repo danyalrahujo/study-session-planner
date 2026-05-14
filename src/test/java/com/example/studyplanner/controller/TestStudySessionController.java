@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.example.studyplanner.model.StudySession;
-import com.example.studyplanner.model.Tag;
 import com.example.studyplanner.repository.StudySessionRepository;
 
 public class TestStudySessionController {
@@ -77,8 +76,6 @@ public class TestStudySessionController {
 
 	@Test
 	public void testFindStudySessionsByTag() {
-
-		Tag tag = new Tag("1", "Programming");
 
 		StudySession studySession1 = new StudySession("1", "Study Java", false, "2025-05-10", null);
 
