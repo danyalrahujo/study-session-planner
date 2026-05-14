@@ -27,4 +27,8 @@ public class StudySessionController {
 	public void updateStudySession(StudySession studySession) {
 		studySessionRepository.update(studySession);
 	}
+
+	public StudySession findStudySessionById(String id) {
+		return studySessionRepository.findById(id);
+	}
 }
