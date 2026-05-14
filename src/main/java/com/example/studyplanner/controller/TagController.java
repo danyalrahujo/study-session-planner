@@ -27,4 +27,8 @@ public class TagController {
 	public void updateTag(Tag tag) {
 		tagRepository.update(tag);
 	}
+
+	public Tag findTagById(String id) {
+		return tagRepository.findById(id);
+	}
 }
