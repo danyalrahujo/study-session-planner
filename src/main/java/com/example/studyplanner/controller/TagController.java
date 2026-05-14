@@ -19,4 +19,12 @@ public class TagController {
 	public List<Tag> getAllTags() {
 		return tagRepository.findAll();
 	}
+
+	public void deleteTag(String id) {
+		tagRepository.delete(id);
+	}
+
+	public void updateTag(Tag tag) {
+		tagRepository.update(tag);
+	}
 }
