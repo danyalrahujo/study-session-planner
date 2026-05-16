@@ -21,7 +21,14 @@ public class InMemoryStudySessionRepository implements StudySessionRepository {
 
 	@Override
 	public StudySession findById(String id) {
-		// TODO Auto-generated method stub
+
+		for (StudySession studySession : studySessions) {
+
+			if (studySession.getId().equals(id)) {
+				return studySession;
+			}
+		}
+
 		return null;
 	}
 
