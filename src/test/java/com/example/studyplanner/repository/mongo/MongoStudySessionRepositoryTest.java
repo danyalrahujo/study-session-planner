@@ -1,5 +1,7 @@
 package com.example.studyplanner.repository.mongo;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.net.InetSocketAddress;
 
 import org.junit.After;
@@ -20,6 +22,7 @@ public class MongoStudySessionRepositoryTest {
 	private static InetSocketAddress serverAddress;
 
 	private MongoClient client;
+	private MongoStudySessionRepository mongoStudySessionRepository;
 
 	@BeforeClass
 	public static void setupServer() {
@@ -35,6 +38,8 @@ public class MongoStudySessionRepositoryTest {
 	@Before
 	public void setup() {
 		client = new MongoClient(new ServerAddress(serverAddress));
+
+		mongoStudySessionRepository = new MongoStudySessionRepository(client);
 	}
 
 	@After
@@ -45,5 +50,6 @@ public class MongoStudySessionRepositoryTest {
 	@Test
 	public void testFindAllWhenDatabaseIsEmpty() {
 
+		assertThat(mongoStudySessionRepository.findAll()).isEmpty();
 	}
 }
