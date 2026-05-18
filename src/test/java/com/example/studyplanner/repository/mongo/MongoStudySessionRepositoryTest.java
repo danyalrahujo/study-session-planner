@@ -1,6 +1,7 @@
 package com.example.studyplanner.repository.mongo;
 
 import com.example.studyplanner.model.StudySession;
+import com.example.studyplanner.model.Tag;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -11,6 +12,8 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import java.util.List;
+import java.util.ArrayList;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
@@ -105,5 +108,21 @@ public class MongoStudySessionRepositoryTest {
 		mongoStudySessionRepository.delete("1");
 
 		assertThat(mongoStudySessionRepository.findAll()).isEmpty();
+	}
+
+	@Test
+	public void testFindByTag() {
+
+		List<Tag> tags = new ArrayList<>();
+
+		tags.add(new Tag("1", "java"));
+
+		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", tags);
+
+		mongoStudySessionRepository.save(studySession);
+
+		List<StudySession> result = mongoStudySessionRepository.findByTag("java");
+
+		assertThat(result).hasSize(1);
 	}
 }
