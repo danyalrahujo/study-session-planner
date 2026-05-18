@@ -9,6 +9,7 @@ import com.example.studyplanner.model.StudySession;
 import com.example.studyplanner.repository.StudySessionRepository;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 
 public class MongoStudySessionRepository implements StudySessionRepository {
 	public static final String STUDY_SESSION_COLLECTION_NAME = "studySession";
@@ -62,11 +63,18 @@ public class MongoStudySessionRepository implements StudySessionRepository {
 	@Override
 	public void update(StudySession studySession) {
 
+		Document document = new Document();
+
+		document.append("id", studySession.getId());
+		document.append("description", studySession.getDescription());
+
+		studySessionCollection.replaceOne(Filters.eq("id", studySession.getId()), document);
 	}
 
 	@Override
 	public void delete(String id) {
 
+		studySessionCollection.deleteOne(Filters.eq("id", id));
 	}
 
 	@Override
