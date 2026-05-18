@@ -78,4 +78,32 @@ public class MongoStudySessionRepositoryTest {
 
 		assertThat(result.getDescription()).isEqualTo("Study TDD");
 	}
+
+	@Test
+	public void testUpdate() {
+
+		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", null);
+
+		mongoStudySessionRepository.save(studySession);
+
+		StudySession updatedStudySession = new StudySession("1", "Study Mockito", false, "2025-05-10", null);
+
+		mongoStudySessionRepository.update(updatedStudySession);
+
+		StudySession result = mongoStudySessionRepository.findById("1");
+
+		assertThat(result.getDescription()).isEqualTo("Study Mockito");
+	}
+
+	@Test
+	public void testDelete() {
+
+		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", null);
+
+		mongoStudySessionRepository.save(studySession);
+
+		mongoStudySessionRepository.delete("1");
+
+		assertThat(mongoStudySessionRepository.findAll()).isEmpty();
+	}
 }
