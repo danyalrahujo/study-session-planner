@@ -64,4 +64,16 @@ public class MongoStudySessionRepositoryTest {
 
 		assertThat(mongoStudySessionRepository.findAll()).hasSize(1);
 	}
+
+	@Test
+	public void testFindById() {
+
+		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", null);
+
+		mongoStudySessionRepository.save(studySession);
+
+		StudySession result = mongoStudySessionRepository.findById("1");
+
+		assertThat(result.getDescription()).isEqualTo("Study TDD");
+	}
 }
