@@ -1,5 +1,7 @@
 package com.example.studyplanner.repository.mongo;
 
+import com.example.studyplanner.model.StudySession;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.InetSocketAddress;
@@ -51,5 +53,15 @@ public class MongoStudySessionRepositoryTest {
 	public void testFindAllWhenDatabaseIsEmpty() {
 
 		assertThat(mongoStudySessionRepository.findAll()).isEmpty();
+	}
+
+	@Test
+	public void testFindAllWhenDatabaseIsNotEmpty() {
+
+		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", null);
+
+		mongoStudySessionRepository.save(studySession);
+
+		assertThat(mongoStudySessionRepository.findAll()).hasSize(1);
 	}
 }
