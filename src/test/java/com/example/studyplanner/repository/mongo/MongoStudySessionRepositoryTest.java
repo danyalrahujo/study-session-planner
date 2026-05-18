@@ -42,6 +42,8 @@ public class MongoStudySessionRepositoryTest {
 		client = new MongoClient(new ServerAddress(serverAddress));
 
 		mongoStudySessionRepository = new MongoStudySessionRepository(client);
+
+		client.getDatabase(MongoStudySessionRepository.STUDY_PLANNER_DB_NAME).drop();
 	}
 
 	@After

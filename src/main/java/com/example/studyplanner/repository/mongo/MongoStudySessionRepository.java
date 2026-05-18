@@ -1,14 +1,13 @@
 package com.example.studyplanner.repository.mongo;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.bson.Document;
 
 import com.example.studyplanner.model.StudySession;
 import com.example.studyplanner.repository.StudySessionRepository;
 import com.mongodb.MongoClient;
-
-import org.bson.Document;
-
 import com.mongodb.client.MongoCollection;
 
 public class MongoStudySessionRepository implements StudySessionRepository {
@@ -51,7 +50,13 @@ public class MongoStudySessionRepository implements StudySessionRepository {
 
 	@Override
 	public StudySession findById(String id) {
-		return null;
+		Document document = studySessionCollection.find(new Document("id", id)).first();
+
+		if (document == null) {
+			return null;
+		}
+
+		return new StudySession(document.getString("id"), document.getString("description"), false, null, null);
 	}
 
 	@Override
