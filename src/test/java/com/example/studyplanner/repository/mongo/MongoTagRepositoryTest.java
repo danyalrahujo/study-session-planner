@@ -20,6 +20,7 @@ import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 public class MongoTagRepositoryTest {
 
 	private static MongoServer server;
+
 	private static InetSocketAddress serverAddress;
 
 	private MongoClient client;
