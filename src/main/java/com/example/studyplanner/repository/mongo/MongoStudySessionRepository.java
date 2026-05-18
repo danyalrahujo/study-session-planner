@@ -6,6 +6,7 @@ import java.util.List;
 import org.bson.Document;
 
 import com.example.studyplanner.model.StudySession;
+import com.example.studyplanner.model.Tag;
 import com.example.studyplanner.repository.StudySessionRepository;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -30,6 +31,16 @@ public class MongoStudySessionRepository implements StudySessionRepository {
 
 		document.append("id", studySession.getId());
 		document.append("description", studySession.getDescription());
+		List<String> tagNames = new ArrayList<>();
+
+		if (studySession.getTags() != null) {
+
+			for (Tag tag : studySession.getTags()) {
+				tagNames.add(tag.getName());
+			}
+		}
+
+		document.append("tags", tagNames);
 
 		studySessionCollection.insertOne(document);
 	}
@@ -79,6 +90,22 @@ public class MongoStudySessionRepository implements StudySessionRepository {
 
 	@Override
 	public List<StudySession> findByTag(String tagId) {
-		return null;
+
+		List<StudySession> studySessions = new ArrayList<>();
+
+		for (Document document : studySessionCollection.find()) {
+
+			List<String> tags = (List<String>) document.get("tags");
+
+			if (tags != null && tags.contains(tagId)) {
+
+				StudySession studySession = new StudySession(document.getString("id"),
+						document.getString("description"), false, null, null);
+
+				studySessions.add(studySession);
+			}
+		}
+
+		return studySessions;
 	}
 }
