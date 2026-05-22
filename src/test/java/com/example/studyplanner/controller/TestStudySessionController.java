@@ -1,5 +1,6 @@
 package com.example.studyplanner.controller;
 
+import static java.util.Arrays.asList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -8,47 +9,64 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.example.studyplanner.model.StudySession;
-import com.example.studyplanner.repository.StudySessionRepository;
 import com.example.studyplanner.model.Tag;
+import com.example.studyplanner.repository.StudySessionRepository;
+import com.example.studyplanner.view.StudyPlannerView;
 
 public class TestStudySessionController {
 
 	private StudySessionController studySessionController;
+
 	private StudySessionRepository studySessionRepository;
+
+	private StudyPlannerView studyPlannerView;
 
 	@Before
 	public void setUp() {
+
 		studySessionRepository = mock(StudySessionRepository.class);
-		studySessionController = new StudySessionController(studySessionRepository);
+
+		studyPlannerView = mock(StudyPlannerView.class);
+
+		studySessionController = new StudySessionController(studySessionRepository, studyPlannerView);
 	}
 
 	@Test
 	public void testAddStudySession() {
+
 		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", null);
 
 		studySessionController.addStudySession(studySession);
 
 		verify(studySessionRepository).save(studySession);
+
+		verify(studyPlannerView).addStudySession(studySession);
 	}
 
 	@Test
 	public void testGetAllStudySessions() {
 
-		when(studySessionRepository.findAll())
-				.thenReturn(java.util.Arrays.asList(new StudySession("1", "Study TDD", false, "2025-05-10", null),
-						new StudySession("2", "Study Mockito", false, "2025-05-11", null)));
+		StudySession studySession1 = new StudySession("1", "Study TDD", false, "2025-05-10", null);
 
-		java.util.List<StudySession> studySessions = studySessionController.getAllStudySessions();
+		StudySession studySession2 = new StudySession("2", "Study Mockito", false, "2025-05-11", null);
 
-		org.junit.Assert.assertEquals(2, studySessions.size());
+		when(studySessionRepository.findAll()).thenReturn(asList(studySession1, studySession2));
+
+		studySessionController.getAllStudySessions();
+
+		verify(studyPlannerView).displayStudySessions(asList(studySession1, studySession2));
 	}
 
 	@Test
 	public void testDeleteStudySession() {
 
-		studySessionController.deleteStudySession("1");
+		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", null);
+
+		studySessionController.deleteStudySession(studySession);
 
 		verify(studySessionRepository).delete("1");
+
+		verify(studyPlannerView).removeStudySession(studySession);
 	}
 
 	@Test
@@ -59,6 +77,8 @@ public class TestStudySessionController {
 		studySessionController.updateStudySession(studySession);
 
 		verify(studySessionRepository).update(studySession);
+
+		verify(studyPlannerView).updateStudySession(studySession);
 	}
 
 	@Test
@@ -82,7 +102,7 @@ public class TestStudySessionController {
 
 		StudySession studySession2 = new StudySession("2", "Study Mockito", false, "2025-05-11", null);
 
-		when(studySessionRepository.findByTag("1")).thenReturn(java.util.Arrays.asList(studySession1, studySession2));
+		when(studySessionRepository.findByTag("1")).thenReturn(asList(studySession1, studySession2));
 
 		java.util.List<StudySession> result = studySessionController.findStudySessionsByTag("1");
 

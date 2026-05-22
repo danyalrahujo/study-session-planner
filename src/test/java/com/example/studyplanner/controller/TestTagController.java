@@ -1,50 +1,71 @@
 package com.example.studyplanner.controller;
 
-import com.example.studyplanner.model.Tag;
-import com.example.studyplanner.repository.TagRepository;
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Mockito.*;
+import com.example.studyplanner.model.Tag;
+import com.example.studyplanner.repository.TagRepository;
+import com.example.studyplanner.view.StudyPlannerView;
 
 public class TestTagController {
 
 	private TagController tagController;
+
 	private TagRepository tagRepository;
+
+	private StudyPlannerView studyPlannerView;
 
 	@Before
 	public void setUp() {
+
 		tagRepository = mock(TagRepository.class);
-		tagController = new TagController(tagRepository);
+
+		studyPlannerView = mock(StudyPlannerView.class);
+
+		tagController = new TagController(tagRepository, studyPlannerView);
 	}
 
 	@Test
 	public void testAddTag() {
+
 		Tag tag = new Tag("1", "Programming");
 
 		tagController.addTag(tag);
 
 		verify(tagRepository).save(tag);
+
+		verify(studyPlannerView).addTag(tag);
 	}
 
 	@Test
 	public void testGetAllTags() {
 
-		when(tagRepository.findAll())
-				.thenReturn(java.util.Arrays.asList(new Tag("1", "Programming"), new Tag("2", "Java")));
+		Tag tag1 = new Tag("1", "Programming");
 
-		java.util.List<Tag> tags = tagController.getAllTags();
+		Tag tag2 = new Tag("2", "Java");
 
-		org.junit.Assert.assertEquals(2, tags.size());
+		when(tagRepository.findAll()).thenReturn(asList(tag1, tag2));
+
+		tagController.getAllTags();
+
+		verify(studyPlannerView).displayTags(asList(tag1, tag2));
 	}
 
 	@Test
 	public void testDeleteTag() {
 
-		tagController.deleteTag("1");
+		Tag tag = new Tag("1", "Programming");
+
+		tagController.deleteTag(tag);
 
 		verify(tagRepository).delete("1");
+
+		verify(studyPlannerView).removeTag(tag);
 	}
 
 	@Test
@@ -55,6 +76,8 @@ public class TestTagController {
 		tagController.updateTag(tag);
 
 		verify(tagRepository).update(tag);
+
+		verify(studyPlannerView).updateTag(tag);
 	}
 
 	@Test
