@@ -59,7 +59,7 @@ public class StudySessionControllerIT {
 		StudySession studySession = new StudySession("1", "Study TDD", false, null, null);
 		repository.save(studySession);
 		controller.deleteStudySession(studySession);
-		verify(view).removeStudySession(studySession);
+		verify(view).deleteStudySession(studySession);
 	}
 
 	@Test

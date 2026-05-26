@@ -21,6 +21,16 @@ public class StudySessionController {
 
 	public void addStudySession(StudySession studySession) {
 
+		StudySession existingStudySession = studySessionRepository.findById(studySession.getId());
+
+		if (existingStudySession != null) {
+
+			studyPlannerView.showStudySessionError("Study session already exists with id " + studySession.getId(),
+					studySession);
+
+			return;
+		}
+
 		studySessionRepository.save(studySession);
 
 		studyPlannerView.addStudySession(studySession);
@@ -33,9 +43,19 @@ public class StudySessionController {
 
 	public void deleteStudySession(StudySession studySession) {
 
+		StudySession existingStudySession = studySessionRepository.findById(studySession.getId());
+
+		if (existingStudySession == null) {
+
+			studyPlannerView.showStudySessionError("No study session exists with id " + studySession.getId(),
+					studySession);
+
+			return;
+		}
+
 		studySessionRepository.delete(studySession.getId());
 
-		studyPlannerView.removeStudySession(studySession);
+		studyPlannerView.deleteStudySession(studySession);
 	}
 
 	public void updateStudySession(StudySession studySession) {

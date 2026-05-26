@@ -2,6 +2,7 @@ package com.example.studyplanner.controller;
 
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -61,11 +62,13 @@ public class TestTagController {
 
 		Tag tag = new Tag("1", "Programming");
 
+		when(tagRepository.findById("1")).thenReturn(tag);
+
 		tagController.deleteTag(tag);
 
 		verify(tagRepository).delete("1");
 
-		verify(studyPlannerView).removeTag(tag);
+		verify(studyPlannerView).deleteTag(tag);
 	}
 
 	@Test
@@ -92,5 +95,33 @@ public class TestTagController {
 		org.junit.Assert.assertNotNull(result);
 
 		org.junit.Assert.assertEquals("Programming", result.getName());
+	}
+
+	@Test
+	public void testAddExistingTag() {
+
+		Tag tag = new Tag("1", "Programming");
+
+		when(tagRepository.findById("1")).thenReturn(tag);
+
+		tagController.addTag(tag);
+
+		verify(studyPlannerView).showTagError("Tag already exists with id 1", tag);
+
+		verify(tagRepository, never()).save(tag);
+	}
+
+	@Test
+	public void testDeleteNonExistingTag() {
+
+		Tag tag = new Tag("1", "Programming");
+
+		when(tagRepository.findById("1")).thenReturn(null);
+
+		tagController.deleteTag(tag);
+
+		verify(studyPlannerView).showTagError("No tag exists with id 1", tag);
+
+		verify(tagRepository, never()).delete("1");
 	}
 }

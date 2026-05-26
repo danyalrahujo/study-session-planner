@@ -18,6 +18,15 @@ public class TagController {
 
 	public void addTag(Tag tag) {
 
+		Tag existingTag = tagRepository.findById(tag.getId());
+
+		if (existingTag != null) {
+
+			studyPlannerView.showTagError("Tag already exists with id " + tag.getId(), tag);
+
+			return;
+		}
+
 		tagRepository.save(tag);
 
 		studyPlannerView.addTag(tag);
@@ -30,9 +39,18 @@ public class TagController {
 
 	public void deleteTag(Tag tag) {
 
+		Tag existingTag = tagRepository.findById(tag.getId());
+
+		if (existingTag == null) {
+
+			studyPlannerView.showTagError("No tag exists with id " + tag.getId(), tag);
+
+			return;
+		}
+
 		tagRepository.delete(tag.getId());
 
-		studyPlannerView.removeTag(tag);
+		studyPlannerView.deleteTag(tag);
 	}
 
 	public void updateTag(Tag tag) {

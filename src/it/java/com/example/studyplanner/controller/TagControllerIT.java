@@ -79,7 +79,7 @@ public class TagControllerIT {
 
 		controller.deleteTag(tag);
 
-		verify(view).removeTag(tag);
+		verify(view).deleteTag(tag);
 	}
 
 	@Test

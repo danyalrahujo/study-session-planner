@@ -6,6 +6,10 @@ import com.example.studyplanner.model.StudySession;
 import com.example.studyplanner.model.Tag;
 
 public interface StudyPlannerView {
+	void showStudySessionError(String message, StudySession studySession);
+
+	void showTagError(String message, Tag tag);
+
 	void displayStudySessions(List<StudySession> studySessions);
 
 	void addStudySession(StudySession studySession);
@@ -22,4 +26,7 @@ public interface StudyPlannerView {
 
 	void updateTag(Tag tag);
 
+	void deleteStudySession(StudySession studySession);
+
+	void deleteTag(Tag tag);
 }

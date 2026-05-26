@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -62,11 +63,13 @@ public class TestStudySessionController {
 
 		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", null);
 
+		when(studySessionRepository.findById("1")).thenReturn(studySession);
+
 		studySessionController.deleteStudySession(studySession);
 
 		verify(studySessionRepository).delete("1");
 
-		verify(studyPlannerView).removeStudySession(studySession);
+		verify(studyPlannerView).deleteStudySession(studySession);
 	}
 
 	@Test
@@ -136,5 +139,33 @@ public class TestStudySessionController {
 		studySessionController.removeTagFromStudySession(studySession, tag);
 
 		org.junit.Assert.assertEquals(0, studySession.getTags().size());
+	}
+
+	@Test
+	public void testAddExistingStudySession() {
+
+		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", null);
+
+		when(studySessionRepository.findById("1")).thenReturn(studySession);
+
+		studySessionController.addStudySession(studySession);
+
+		verify(studyPlannerView).showStudySessionError("Study session already exists with id 1", studySession);
+
+		verify(studySessionRepository, never()).save(studySession);
+	}
+
+	@Test
+	public void testDeleteNonExistingStudySession() {
+
+		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", null);
+
+		when(studySessionRepository.findById("1")).thenReturn(null);
+
+		studySessionController.deleteStudySession(studySession);
+
+		verify(studyPlannerView).showStudySessionError("No study session exists with id 1", studySession);
+
+		verify(studySessionRepository, never()).delete("1");
 	}
 }
