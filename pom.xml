@@ -173,12 +173,6 @@
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 			</plugin>
-
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-			</plugin>
-
 		</plugins>
 
 	</build>
@@ -221,4 +215,23 @@
 
 	</dependencies>
 
+	<profiles>
+
+		<profile>
+			<id>jacoco</id>
+
+			<build>
+				<plugins>
+
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+					</plugin>
+
+				</plugins>
+			</build>
+
+		</profile>
+
+	</profiles>
 </project>
