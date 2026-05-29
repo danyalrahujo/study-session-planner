@@ -266,5 +266,33 @@
 
 		</profile>
 
+		<profile>
+			<id>pit-mutation-testing</id>
+
+			<build>
+				<plugins>
+
+					<plugin>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+
+						<executions>
+							<execution>
+
+								<phase>verify</phase>
+
+								<goals>
+									<goal>mutationCoverage</goal>
+								</goals>
+
+							</execution>
+						</executions>
+
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+
 	</profiles>
 </project>
