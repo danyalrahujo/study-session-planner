@@ -13,6 +13,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<pitest-maven-version>1.20.3</pitest-maven-version>
+
 	</properties>
 
 	<build>
@@ -152,7 +154,6 @@
 
 					</executions>
 				</plugin>
-
 			</plugins>
 		</pluginManagement>
 
@@ -173,6 +174,38 @@
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 			</plugin>
+
+			<!-- PIT -->
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>${pitest-maven-version}</version>
+
+				<configuration>
+
+					<targetClasses>
+						<param>com.example.studyplanner.controller.*</param>
+						<param>com.example.studyplanner.repository.mongo.*</param>
+					</targetClasses>
+
+					<targetTests>
+						<param>com.example.studyplanner.*</param>
+					</targetTests>
+
+					<excludedTestClasses>
+						<param>*IT</param>
+					</excludedTestClasses>
+
+					<mutators>
+						<mutator>DEFAULTS</mutator>
+					</mutators>
+
+					<mutationThreshold>80</mutationThreshold>
+
+				</configuration>
+			</plugin>
+
+
 		</plugins>
 
 	</build>
