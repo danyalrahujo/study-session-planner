@@ -16,7 +16,6 @@
 		<pitest-maven-version>1.20.3</pitest-maven-version>
 		<coveralls-maven-plugin-version>4.3.0</coveralls-maven-plugin-version>
 		<jaxb-api-version>2.3.1</jaxb-api-version>
-
 	</properties>
 
 	<build>
@@ -258,8 +257,8 @@
 
 		<dependency>
 			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>3.26.3</version>
+			<artifactId>assertj-swing-junit</artifactId>
+			<version>3.17.1</version>
 			<scope>test</scope>
 		</dependency>
 
