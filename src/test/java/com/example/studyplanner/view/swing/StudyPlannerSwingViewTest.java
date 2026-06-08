@@ -55,4 +55,21 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		window.button(JButtonMatcher.withText("Add Session")).requireEnabled();
 	}
+
+	@Test
+	public void testWhenEitherIdOrDescriptionAreBlankThenAddButtonShouldBeDisabled() {
+
+		window.textBox("idTextBox").enterText("1");
+		window.textBox("descriptionTextBox").enterText(" ");
+
+		window.button(JButtonMatcher.withText("Add Session")).requireDisabled();
+
+		window.textBox("idTextBox").setText("");
+		window.textBox("descriptionTextBox").setText("");
+
+		window.textBox("idTextBox").enterText(" ");
+		window.textBox("descriptionTextBox").enterText("Math");
+
+		window.button(JButtonMatcher.withText("Add Session")).requireDisabled();
+	}
 }
