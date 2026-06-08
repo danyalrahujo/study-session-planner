@@ -49,12 +49,12 @@ public class StudyPlannerSwingView extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWidths = new int[] { 0, 0, 0 };
+		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0 };
+		gbl_contentPane.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
-		
+
 		JLabel lblNewLabel = new JLabel("id");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
@@ -62,7 +62,7 @@ public class StudyPlannerSwingView extends JFrame {
 		gbc_lblNewLabel.gridx = 0;
 		gbc_lblNewLabel.gridy = 0;
 		contentPane.add(lblNewLabel, gbc_lblNewLabel);
-		
+
 		idTextBox = new JTextField();
 		idTextBox.setName("idTextBox");
 		GridBagConstraints gbc_textField = new GridBagConstraints();
@@ -72,7 +72,7 @@ public class StudyPlannerSwingView extends JFrame {
 		gbc_textField.gridy = 0;
 		contentPane.add(idTextBox, gbc_textField);
 		idTextBox.setColumns(10);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("description");
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
@@ -80,7 +80,7 @@ public class StudyPlannerSwingView extends JFrame {
 		gbc_lblNewLabel_1.gridx = 0;
 		gbc_lblNewLabel_1.gridy = 1;
 		contentPane.add(lblNewLabel_1, gbc_lblNewLabel_1);
-		
+
 		descriptionTextBox = new JTextField();
 		descriptionTextBox.setName("descriptionTextBox");
 		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
@@ -90,8 +90,9 @@ public class StudyPlannerSwingView extends JFrame {
 		gbc_textField_1.gridy = 1;
 		contentPane.add(descriptionTextBox, gbc_textField_1);
 		descriptionTextBox.setColumns(10);
-		
+
 		JButton addSessionButton = new JButton("Add Session");
+		addSessionButton.setName("addSessionButton");
 		addSessionButton.setEnabled(false);
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
@@ -99,7 +100,7 @@ public class StudyPlannerSwingView extends JFrame {
 		gbc_btnNewButton.gridx = 0;
 		gbc_btnNewButton.gridy = 2;
 		contentPane.add(addSessionButton, gbc_btnNewButton);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setName("");
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -109,29 +110,31 @@ public class StudyPlannerSwingView extends JFrame {
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 3;
 		contentPane.add(scrollPane, gbc_scrollPane);
-		
-		JList list = new JList();
+
+		JList<String> list = new JList<>();
 		list.setName("sessionList");
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(list);
-		
+
 		JButton updateSessionButton = new JButton("Update Session");
+		updateSessionButton.setName("updateSessionButton");
 		updateSessionButton.setEnabled(false);
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton_1.gridx = 0;
 		gbc_btnNewButton_1.gridy = 4;
 		contentPane.add(updateSessionButton, gbc_btnNewButton_1);
-		
+
 		JButton deleteSessionButton = new JButton("Delete Selected");
+		deleteSessionButton.setName("deleteSessionButton");
 		deleteSessionButton.setEnabled(false);
 		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
 		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_2.gridx = 1;
 		gbc_btnNewButton_2.gridy = 4;
 		contentPane.add(deleteSessionButton, gbc_btnNewButton_2);
-		
-		JLabel lblNewLabel_2 = new JLabel("");
+
+		JLabel lblNewLabel_2 = new JLabel(" ");
 		lblNewLabel_2.setName("errorMessageLabel");
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.gridwidth = 2;
