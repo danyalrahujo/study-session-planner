@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
+
 public class StudyPlannerSwingView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
