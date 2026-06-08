@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -101,6 +103,16 @@ public class StudyPlannerSwingView extends JFrame {
 		gbc_btnNewButton.gridy = 2;
 		contentPane.add(addSessionButton, gbc_btnNewButton);
 
+		KeyAdapter addButtonEnabler = new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				addSessionButton.setEnabled(
+						!idTextBox.getText().trim().isEmpty() && !descriptionTextBox.getText().trim().isEmpty());
+			}
+		};
+		idTextBox.addKeyListener(addButtonEnabler);
+		descriptionTextBox.addKeyListener(addButtonEnabler);
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setName("");
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -142,7 +154,6 @@ public class StudyPlannerSwingView extends JFrame {
 		gbc_lblNewLabel_2.gridx = 0;
 		gbc_lblNewLabel_2.gridy = 5;
 		contentPane.add(lblNewLabel_2, gbc_lblNewLabel_2);
-
 	}
 
 }
