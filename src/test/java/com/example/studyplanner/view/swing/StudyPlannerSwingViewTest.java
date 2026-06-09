@@ -179,4 +179,24 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		verify(studySessionController).addStudySession(new StudySession("1", "Math", false, "", null));
 	}
+
+	@Test
+	public void testDeleteButtonShouldDelegateToStudySessionControllerDeleteStudySession() {
+
+		StudySession session1 = new StudySession("1", "Math", false, "", null);
+
+		StudySession session2 = new StudySession("2", "Physics", false, "", null);
+
+		GuiActionRunner.execute(() -> {
+			studyPlannerSwingView.getListSessionsModel().addElement(session1);
+
+			studyPlannerSwingView.getListSessionsModel().addElement(session2);
+		});
+
+		window.list("sessionList").selectItem(1);
+
+		window.button(JButtonMatcher.withText("Delete Selected")).click();
+
+		verify(studySessionController).deleteStudySession(session2);
+	}
 }
