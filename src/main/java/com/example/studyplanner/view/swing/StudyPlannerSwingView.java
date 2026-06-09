@@ -60,7 +60,6 @@ public class StudyPlannerSwingView extends JFrame {
 		gbl_contentPane.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
 		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
-
 		JLabel lblNewLabel = new JLabel("id");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
@@ -106,7 +105,6 @@ public class StudyPlannerSwingView extends JFrame {
 		gbc_btnNewButton.gridx = 0;
 		gbc_btnNewButton.gridy = 2;
 		contentPane.add(addSessionButton, gbc_btnNewButton);
-
 		KeyAdapter addButtonEnabler = new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -116,7 +114,6 @@ public class StudyPlannerSwingView extends JFrame {
 		};
 		idTextBox.addKeyListener(addButtonEnabler);
 		descriptionTextBox.addKeyListener(addButtonEnabler);
-
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setName("");
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -164,6 +161,7 @@ public class StudyPlannerSwingView extends JFrame {
 	}
 
 	DefaultListModel<StudySession> getListSessionsModel() {
+
 		return listSessionsModel;
 	}
 

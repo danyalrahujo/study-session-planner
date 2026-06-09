@@ -8,22 +8,22 @@ import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 
+import com.example.studyplanner.model.StudySession;
+
 public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
+
+	private StudyPlannerSwingView studyPlannerSwingView;
 
 	private FrameFixture window;
 
 	@Override
-
 	protected void onSetUp() {
 
-		StudyPlannerSwingView view =
+		studyPlannerSwingView = GuiActionRunner.execute(() -> new StudyPlannerSwingView());
 
-				GuiActionRunner.execute(() -> new StudyPlannerSwingView());
-
-		window = new FrameFixture(robot(), view);
+		window = new FrameFixture(robot(), studyPlannerSwingView);
 
 		window.show();
-
 	}
 
 	@Test
@@ -71,5 +71,21 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("descriptionTextBox").enterText("Math");
 
 		window.button(JButtonMatcher.withText("Add Session")).requireDisabled();
+	}
+
+	@Test
+	public void testDeleteButtonShouldBeEnabledOnlyWhenAStudySessionIsSelected() {
+
+		StudySession session = new StudySession("1", "Math", false, "", null);
+
+		GuiActionRunner.execute(() -> studyPlannerSwingView.getListSessionsModel().addElement(session));
+
+		window.list("sessionList").selectItem(0);
+
+		window.button(JButtonMatcher.withText("Delete Selected")).requireEnabled();
+
+		window.list("sessionList").clearSelection();
+
+		window.button(JButtonMatcher.withText("Delete Selected")).requireDisabled();
 	}
 }
