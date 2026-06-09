@@ -1,13 +1,15 @@
 package com.example.studyplanner.view.swing;
 
 import java.awt.EventQueue;
-
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -16,8 +18,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 import com.example.studyplanner.model.Tag;
 
@@ -29,10 +29,40 @@ public class TagSwingView extends JFrame {
 	private JList<Tag> listTags;
 	private DefaultListModel<Tag> listTagsModel;
 	private JButton deleteTagButton;
+	private JLabel errorMessageLabel;
 
 	DefaultListModel<Tag> getListTagsModel() {
 		return listTagsModel;
 	}
+
+	public void showTagError(String message, Tag tag) {
+
+		errorMessageLabel.setText(message + ": " + tag);
+	}
+
+	public void displayTags(List<Tag> tags) {
+
+		tags.forEach(listTagsModel::addElement);
+	}
+
+	public void addTag(Tag tag) {
+
+		listTagsModel.addElement(tag);
+
+		resetErrorLabel();
+	}
+
+	public void removeTag(Tag tag) {
+
+		listTagsModel.removeElement(tag);
+
+		resetErrorLabel();
+	}
+	
+	private void resetErrorLabel() {
+		errorMessageLabel.setText("");
+	}
+
 
 	/**
 	 * Launch the application.
@@ -142,7 +172,7 @@ public class TagSwingView extends JFrame {
 		gbc_btnNewButton_2.gridy = 3;
 		contentPane.add(deleteTagButton, gbc_btnNewButton_2);
 
-		JLabel errorMessageLabel = new JLabel("");
+		errorMessageLabel = new JLabel("");
 		errorMessageLabel.setName("errorMessageLabel");
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.gridwidth = 2;
