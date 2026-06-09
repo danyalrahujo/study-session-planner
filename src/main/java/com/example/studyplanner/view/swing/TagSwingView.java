@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JButton;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -18,11 +19,20 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import com.example.studyplanner.model.Tag;
+
 public class TagSwingView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField tagNameTextBox;
+	private JList<Tag> listTags;
+	private DefaultListModel<Tag> listTagsModel;
+	private JButton deleteTagButton;
+
+	DefaultListModel<Tag> getListTagsModel() {
+		return listTagsModel;
+	}
 
 	/**
 	 * Launch the application.
@@ -107,10 +117,12 @@ public class TagSwingView extends JFrame {
 		gbc_scrollPane.gridy = 2;
 		contentPane.add(scrollPane, gbc_scrollPane);
 
-		JList list = new JList();
-		scrollPane.setViewportView(list);
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setName("tagList");
+		listTagsModel = new DefaultListModel<>();
+		listTags = new JList<>(listTagsModel);
+		scrollPane.setViewportView(listTags);
+		listTags.addListSelectionListener(e -> deleteTagButton.setEnabled(listTags.getSelectedIndex() != -1));
+		listTags.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listTags.setName("tagList");
 
 		JButton btnNewButton_1 = new JButton("Update Tag");
 		btnNewButton_1.setName("updateTagButton");
@@ -121,14 +133,14 @@ public class TagSwingView extends JFrame {
 		gbc_btnNewButton_1.gridy = 3;
 		contentPane.add(btnNewButton_1, gbc_btnNewButton_1);
 
-		JButton btnNewButton_2 = new JButton("Delete Selected");
-		btnNewButton_2.setName("deleteTagButton");
-		btnNewButton_2.setEnabled(false);
+		deleteTagButton = new JButton("Delete Selected");
+		deleteTagButton.setName("deleteTagButton");
+		deleteTagButton.setEnabled(false);
 		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
 		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_2.gridx = 1;
 		gbc_btnNewButton_2.gridy = 3;
-		contentPane.add(btnNewButton_2, gbc_btnNewButton_2);
+		contentPane.add(deleteTagButton, gbc_btnNewButton_2);
 
 		JLabel errorMessageLabel = new JLabel("");
 		errorMessageLabel.setName("errorMessageLabel");
