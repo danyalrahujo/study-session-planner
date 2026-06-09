@@ -1,6 +1,7 @@
 package com.example.studyplanner.view.swing;
 
 import java.awt.EventQueue;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -14,6 +15,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class TagSwingView extends JFrame {
 
@@ -72,15 +75,28 @@ public class TagSwingView extends JFrame {
 		contentPane.add(tagNameTextBox, gbc_textField);
 		tagNameTextBox.setColumns(10);
 
-		JButton btnNewButton = new JButton("Add Tag");
-		btnNewButton.setName("addTagButton");
-		btnNewButton.setEnabled(false);
+		JButton addTagButton = new JButton("Add Tag");
+		addTagButton.setName("addTagButton");
+		addTagButton.setEnabled(false);
+
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton.gridwidth = 2;
 		gbc_btnNewButton.gridx = 0;
 		gbc_btnNewButton.gridy = 1;
-		contentPane.add(btnNewButton, gbc_btnNewButton);
+
+		contentPane.add(addTagButton, gbc_btnNewButton);
+
+		KeyAdapter addButtonEnabler = new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				addTagButton.setEnabled(!tagNameTextBox.getText().trim().isEmpty());
+			}
+		};
+
+		tagNameTextBox.addKeyListener(addButtonEnabler);
 
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
