@@ -38,4 +38,12 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		window.label("errorMessageLabel").requireText("");
 	}
+
+	@Test
+	public void testWhenTagNameIsNonEmptyThenAddTagButtonShouldBeEnabled() {
+
+		window.textBox("tagNameTextBox").enterText("Java");
+
+		window.button(JButtonMatcher.withText("Add Tag")).requireEnabled();
+	}
 }
