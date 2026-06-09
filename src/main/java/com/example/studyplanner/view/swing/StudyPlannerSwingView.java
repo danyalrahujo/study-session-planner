@@ -16,7 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
-
+import javax.swing.DefaultListModel;
+import com.example.studyplanner.model.StudySession;
 
 public class StudyPlannerSwingView extends JFrame {
 
@@ -24,6 +25,8 @@ public class StudyPlannerSwingView extends JFrame {
 	private JPanel contentPane;
 	private JTextField idTextBox;
 	private JTextField descriptionTextBox;
+	private JList<StudySession> listSessions;
+	private DefaultListModel<StudySession> listSessionsModel;
 
 	/**
 	 * Launch the application.
@@ -124,10 +127,13 @@ public class StudyPlannerSwingView extends JFrame {
 		gbc_scrollPane.gridy = 3;
 		contentPane.add(scrollPane, gbc_scrollPane);
 
-		JList<String> list = new JList<>();
-		list.setName("sessionList");
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		scrollPane.setViewportView(list);
+		listSessionsModel = new DefaultListModel<>();
+
+		listSessions = new JList<>(listSessionsModel);
+		listSessions.setName("sessionList");
+		listSessions.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		scrollPane.setViewportView(listSessions);
 
 		JButton updateSessionButton = new JButton("Update Session");
 		updateSessionButton.setName("updateSessionButton");
@@ -155,6 +161,10 @@ public class StudyPlannerSwingView extends JFrame {
 		gbc_lblNewLabel_2.gridx = 0;
 		gbc_lblNewLabel_2.gridy = 5;
 		contentPane.add(lblNewLabel_2, gbc_lblNewLabel_2);
+	}
+
+	DefaultListModel<StudySession> getListSessionsModel() {
+		return listSessionsModel;
 	}
 
 }
