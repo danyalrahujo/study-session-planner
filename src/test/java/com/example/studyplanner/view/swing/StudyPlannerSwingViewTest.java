@@ -7,6 +7,9 @@ import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Arrays;
 
 import com.example.studyplanner.model.StudySession;
 
@@ -87,5 +90,81 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.list("sessionList").clearSelection();
 
 		window.button(JButtonMatcher.withText("Delete Selected")).requireDisabled();
+	}
+	
+	@Test
+	public void testDisplayStudySessionsShouldAddSessionsToTheList() {
+	    StudySession session1 =
+	        new StudySession("1", "Math", false, "", null);
+	    StudySession session2 =
+	        new StudySession("2", "Physics", false, "", null);
+
+	    GuiActionRunner.execute(
+	        () -> studyPlannerSwingView.displayStudySessions(
+	            Arrays.asList(session1, session2))
+	    );
+
+	    assertThat(window.list("sessionList").contents())
+	        .containsExactly(
+	            session1.toString(),
+	            session2.toString()
+	        );
+	}
+	@Test
+	public void testShowStudySessionErrorShouldShowMessageInErrorLabel() {
+
+	    StudySession session =
+	        new StudySession("1", "Math", false, "", null);
+
+	    GuiActionRunner.execute(
+	        () -> studyPlannerSwingView.showStudySessionError(
+	            "error message",
+	            session)
+	    );
+
+	    window.label("errorMessageLabel")
+	          .requireText("error message: " + session);
+	}
+	@Test
+	public void testAddStudySessionShouldAddSessionToListAndResetErrorLabel() {
+
+	    StudySession session =
+	        new StudySession("1", "Math", false, "", null);
+
+	    GuiActionRunner.execute(
+	        () -> studyPlannerSwingView.addStudySession(session)
+	    );
+
+	    assertThat(window.list("sessionList").contents())
+	        .containsExactly(session.toString());
+
+	    window.label("errorMessageLabel")
+	          .requireText(" ");
+	}
+	@Test
+	public void testRemoveStudySessionShouldRemoveSessionFromListAndResetErrorLabel() {
+
+	    StudySession session1 =
+	        new StudySession("1", "Math", false, "", null);
+	    StudySession session2 =
+	        new StudySession("2", "Physics", false, "", null);
+
+	    GuiActionRunner.execute(() -> {
+	        studyPlannerSwingView.getListSessionsModel()
+	            .addElement(session1);
+
+	        studyPlannerSwingView.getListSessionsModel()
+	            .addElement(session2);
+	    });
+
+	    GuiActionRunner.execute(
+	        () -> studyPlannerSwingView.removeStudySession(session1)
+	    );
+
+	    assertThat(window.list("sessionList").contents())
+	        .containsExactly(session2.toString());
+
+	    window.label("errorMessageLabel")
+	          .requireText(" ");
 	}
 }

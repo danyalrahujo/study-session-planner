@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,8 +19,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.DefaultListModel;
 import com.example.studyplanner.model.StudySession;
+import com.example.studyplanner.model.Tag;
+import com.example.studyplanner.view.StudyPlannerView;
 
-public class StudyPlannerSwingView extends JFrame {
+public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -166,6 +169,78 @@ public class StudyPlannerSwingView extends JFrame {
 	DefaultListModel<StudySession> getListSessionsModel() {
 
 		return listSessionsModel;
+	}
+
+	@Override
+	public void showStudySessionError(String message, StudySession studySession) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showTagError(String message, Tag tag) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void displayStudySessions(List<StudySession> studySessions) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addStudySession(StudySession studySession) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeStudySession(StudySession studySession) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateStudySession(StudySession studySession) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void displayTags(List<Tag> tags) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addTag(Tag tag) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeTag(Tag tag) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateTag(Tag tag) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteStudySession(StudySession studySession) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteTag(Tag tag) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
