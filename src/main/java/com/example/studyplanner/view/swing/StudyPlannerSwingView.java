@@ -31,6 +31,7 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 	private JList<StudySession> listSessions;
 	private DefaultListModel<StudySession> listSessionsModel;
 	private JButton deleteSessionButton;
+	private JLabel errorMessageLabel;
 
 	/**
 	 * Launch the application.
@@ -156,91 +157,98 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 		gbc_btnNewButton_2.gridy = 4;
 		contentPane.add(deleteSessionButton, gbc_btnNewButton_2);
 
-		JLabel lblNewLabel_2 = new JLabel(" ");
-		lblNewLabel_2.setName("errorMessageLabel");
+		errorMessageLabel = new JLabel(" ");
+		errorMessageLabel.setName("errorMessageLabel");
+
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.gridwidth = 2;
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 0, 5);
 		gbc_lblNewLabel_2.gridx = 0;
 		gbc_lblNewLabel_2.gridy = 5;
-		contentPane.add(lblNewLabel_2, gbc_lblNewLabel_2);
+
+		contentPane.add(errorMessageLabel, gbc_lblNewLabel_2);
 	}
 
 	DefaultListModel<StudySession> getListSessionsModel() {
 
 		return listSessionsModel;
+
+	}
+
+	private void resetErrorLabel() {
+
+		errorMessageLabel.setText(" ");
+
 	}
 
 	@Override
 	public void showStudySessionError(String message, StudySession studySession) {
-		// TODO Auto-generated method stub
-		
+		errorMessageLabel.setText(message + ": " + studySession);
 	}
 
 	@Override
 	public void showTagError(String message, Tag tag) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void displayStudySessions(List<StudySession> studySessions) {
-		// TODO Auto-generated method stub
-		
+		studySessions.forEach(listSessionsModel::addElement);
 	}
 
 	@Override
 	public void addStudySession(StudySession studySession) {
-		// TODO Auto-generated method stub
-		
+		listSessionsModel.addElement(studySession);
+		resetErrorLabel();
 	}
 
 	@Override
 	public void removeStudySession(StudySession studySession) {
-		// TODO Auto-generated method stub
-		
+		listSessionsModel.removeElement(studySession);
+		resetErrorLabel();
 	}
 
 	@Override
 	public void updateStudySession(StudySession studySession) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void displayTags(List<Tag> tags) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void addTag(Tag tag) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removeTag(Tag tag) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void updateTag(Tag tag) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteStudySession(StudySession studySession) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteTag(Tag tag) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
