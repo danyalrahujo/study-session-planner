@@ -10,6 +10,11 @@ import org.junit.Test;
 import com.example.studyplanner.model.Tag;
 import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.verify;
+
+import com.example.studyplanner.controller.TagController;
 
 public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 
@@ -17,13 +22,27 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	private TagSwingView tagSwingView;
 
+	@Mock
+	private TagController tagController;
+
+	private AutoCloseable closeable;
+
 	@Override
 	protected void onSetUp() {
-		tagSwingView = GuiActionRunner.execute(() -> new TagSwingView());
+		closeable = MockitoAnnotations.openMocks(this);
 
-		window = new FrameFixture(robot(), tagSwingView);
+		tagSwingView = GuiActionRunner.execute(() -> {
+			TagSwingView view = new TagSwingView();
 
-		window.show();
+			view.setTagController(tagController);
+
+			return view;
+		});
+	}
+
+	@Override
+	protected void onTearDown() throws Exception {
+		closeable.close();
 	}
 
 	@Test
@@ -131,5 +150,15 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 		assertThat(window.list("tagList").contents()).containsExactly(tag2.toString());
 
 		window.label("errorMessageLabel").requireText("");
+	}
+
+	@Test
+	public void testAddTagButtonShouldDelegateToTagControllerAddTag() {
+
+		window.textBox("tagNameTextBox").enterText("Java");
+
+		window.button(JButtonMatcher.withText("Add Tag")).click();
+
+		verify(tagController).addTag(new Tag("1", "Java"));
 	}
 }
