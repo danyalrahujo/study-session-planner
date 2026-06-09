@@ -21,6 +21,7 @@ import javax.swing.DefaultListModel;
 import com.example.studyplanner.model.StudySession;
 import com.example.studyplanner.model.Tag;
 import com.example.studyplanner.view.StudyPlannerView;
+import com.example.studyplanner.controller.StudySessionController;
 
 public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 
@@ -32,6 +33,7 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 	private DefaultListModel<StudySession> listSessionsModel;
 	private JButton deleteSessionButton;
 	private JLabel errorMessageLabel;
+	private StudySessionController studySessionController;
 
 	/**
 	 * Launch the application.
@@ -110,6 +112,7 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 		gbc_btnNewButton.gridx = 0;
 		gbc_btnNewButton.gridy = 2;
 		contentPane.add(addSessionButton, gbc_btnNewButton);
+
 		KeyAdapter addButtonEnabler = new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -173,6 +176,11 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 
 		return listSessionsModel;
 
+	}
+
+	public void setStudySessionController(StudySessionController studySessionController) {
+
+		this.studySessionController = studySessionController;
 	}
 
 	private void resetErrorLabel() {

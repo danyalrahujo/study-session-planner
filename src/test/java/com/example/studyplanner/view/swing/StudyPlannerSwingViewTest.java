@@ -13,20 +13,45 @@ import java.util.Arrays;
 
 import com.example.studyplanner.model.StudySession;
 
+import static org.mockito.Mockito.verify;
+
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import com.example.studyplanner.controller.StudySessionController;
+
 public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	private StudyPlannerSwingView studyPlannerSwingView;
 
 	private FrameFixture window;
 
+	@Mock
+	private StudySessionController studySessionController;
+
+	private AutoCloseable closeable;
+
 	@Override
 	protected void onSetUp() {
 
-		studyPlannerSwingView = GuiActionRunner.execute(() -> new StudyPlannerSwingView());
+		closeable = MockitoAnnotations.openMocks(this);
+
+		studyPlannerSwingView = GuiActionRunner.execute(() -> {
+			StudyPlannerSwingView view = new StudyPlannerSwingView();
+
+			view.setStudySessionController(studySessionController);
+
+			return view;
+		});
 
 		window = new FrameFixture(robot(), studyPlannerSwingView);
 
 		window.show();
+	}
+
+	@Override
+	protected void onTearDown() throws Exception {
+		closeable.close();
 	}
 
 	@Test
@@ -141,5 +166,17 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 		assertThat(window.list("sessionList").contents()).containsExactly(session2.toString());
 
 		window.label("errorMessageLabel").requireText(" ");
+	}
+
+	@Test
+	public void testAddButtonShouldDelegateToStudySessionControllerAddStudySession() {
+
+		window.textBox("idTextBox").enterText("1");
+
+		window.textBox("descriptionTextBox").enterText("Math");
+
+		window.button(JButtonMatcher.withText("Add Session")).click();
+
+		verify(studySessionController).addStudySession(new StudySession("1", "Math", false, "", null));
 	}
 }
