@@ -157,10 +157,15 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 		deleteSessionButton = new JButton("Delete Selected");
 		deleteSessionButton.setName("deleteSessionButton");
 		deleteSessionButton.setEnabled(false);
+
+		deleteSessionButton
+				.addActionListener(e -> studySessionController.deleteStudySession(listSessions.getSelectedValue()));
+
 		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
 		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_2.gridx = 1;
 		gbc_btnNewButton_2.gridy = 4;
+
 		contentPane.add(deleteSessionButton, gbc_btnNewButton_2);
 
 		errorMessageLabel = new JLabel(" ");
