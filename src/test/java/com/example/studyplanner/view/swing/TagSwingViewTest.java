@@ -8,6 +8,8 @@ import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 import com.example.studyplanner.model.Tag;
+import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
 
 public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 
@@ -77,5 +79,57 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.list("tagList").clearSelection();
 
 		window.button(JButtonMatcher.withText("Delete Selected")).requireDisabled();
+	}
+
+	@Test
+	public void testDisplayTagsShouldAddTagsToTheList() {
+
+		Tag tag1 = new Tag("1", "Java");
+		Tag tag2 = new Tag("2", "Spring");
+
+		GuiActionRunner.execute(() -> tagSwingView.displayTags(Arrays.asList(tag1, tag2)));
+
+		assertThat(window.list("tagList").contents()).containsExactly(tag1.toString(), tag2.toString());
+	}
+
+	@Test
+	public void testShowTagErrorShouldShowMessageInErrorLabel() {
+
+		Tag tag = new Tag("1", "Java");
+
+		GuiActionRunner.execute(() -> tagSwingView.showTagError("error message", tag));
+
+		window.label("errorMessageLabel").requireText("error message: " + tag);
+	}
+
+	@Test
+	public void testAddTagShouldAddTagToListAndResetErrorLabel() {
+
+		Tag tag = new Tag("1", "Java");
+
+		GuiActionRunner.execute(() -> tagSwingView.addTag(tag));
+
+		assertThat(window.list("tagList").contents()).containsExactly(tag.toString());
+
+		window.label("errorMessageLabel").requireText("");
+	}
+
+	@Test
+	public void testRemoveTagShouldRemoveTagFromListAndResetErrorLabel() {
+
+		Tag tag1 = new Tag("1", "Java");
+		Tag tag2 = new Tag("2", "Spring");
+
+		GuiActionRunner.execute(() -> {
+			tagSwingView.getListTagsModel().addElement(tag1);
+
+			tagSwingView.getListTagsModel().addElement(tag2);
+		});
+
+		GuiActionRunner.execute(() -> tagSwingView.removeTag(tag1));
+
+		assertThat(window.list("tagList").contents()).containsExactly(tag2.toString());
+
+		window.label("errorMessageLabel").requireText("");
 	}
 }
