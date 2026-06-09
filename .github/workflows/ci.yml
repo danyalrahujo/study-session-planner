@@ -19,7 +19,7 @@ jobs:
 
       - name: Build with Maven and Upload Coverage
         run: >
-          mvn clean verify -Pjacoco
+          xvfb-run mvn clean verify -Pjacoco
           -DrepoToken=$COVERALLS_REPO_TOKEN
           coveralls:report
         env:
