@@ -27,6 +27,7 @@ public class StudyPlannerSwingView extends JFrame {
 	private JTextField descriptionTextBox;
 	private JList<StudySession> listSessions;
 	private DefaultListModel<StudySession> listSessionsModel;
+	private JButton deleteSessionButton;
 
 	/**
 	 * Launch the application.
@@ -131,6 +132,8 @@ public class StudyPlannerSwingView extends JFrame {
 		listSessions.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		scrollPane.setViewportView(listSessions);
+		listSessions
+				.addListSelectionListener(e -> deleteSessionButton.setEnabled(listSessions.getSelectedIndex() != -1));
 
 		JButton updateSessionButton = new JButton("Update Session");
 		updateSessionButton.setName("updateSessionButton");
@@ -141,7 +144,7 @@ public class StudyPlannerSwingView extends JFrame {
 		gbc_btnNewButton_1.gridy = 4;
 		contentPane.add(updateSessionButton, gbc_btnNewButton_1);
 
-		JButton deleteSessionButton = new JButton("Delete Selected");
+		deleteSessionButton = new JButton("Delete Selected");
 		deleteSessionButton.setName("deleteSessionButton");
 		deleteSessionButton.setEnabled(false);
 		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
