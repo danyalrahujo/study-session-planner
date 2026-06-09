@@ -113,6 +113,9 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 		gbc_btnNewButton.gridy = 2;
 		contentPane.add(addSessionButton, gbc_btnNewButton);
 
+		addSessionButton.addActionListener(e -> studySessionController
+				.addStudySession(new StudySession(idTextBox.getText(), descriptionTextBox.getText(), false, "", null)));
+
 		KeyAdapter addButtonEnabler = new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
