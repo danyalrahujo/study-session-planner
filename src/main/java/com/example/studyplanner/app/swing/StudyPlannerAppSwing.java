@@ -27,6 +27,9 @@ public class StudyPlannerAppSwing implements Callable<Void> {
 	@Option(names = { "--mongoPort", "--port" }, description = "MongoDB port")
 	private static int mongoPort = 27017;
 
+	@Option(names = { "--databaseName", "--dbName" }, description = "Database name")
+	private static String databaseName = "studyPlanner";
+
 	public static void main(String[] args) {
 		new CommandLine(new StudyPlannerAppSwing()).execute(args);
 	}
@@ -40,9 +43,10 @@ public class StudyPlannerAppSwing implements Callable<Void> {
 
 				MongoClient client = new MongoClient(new ServerAddress(mongoHost, mongoPort));
 
-				MongoStudySessionRepository studySessionRepository = new MongoStudySessionRepository(client);
+				MongoStudySessionRepository studySessionRepository = new MongoStudySessionRepository(client,
+						databaseName);
 
-				MongoTagRepository tagRepository = new MongoTagRepository(client);
+				MongoTagRepository tagRepository = new MongoTagRepository(client, databaseName);
 
 				StudyPlannerSwingView studyPlannerView = new StudyPlannerSwingView();
 

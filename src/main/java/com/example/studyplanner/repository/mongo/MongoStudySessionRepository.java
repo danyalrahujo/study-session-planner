@@ -20,8 +20,12 @@ public class MongoStudySessionRepository implements StudySessionRepository {
 	private MongoCollection<Document> studySessionCollection;
 
 	public MongoStudySessionRepository(MongoClient client) {
+		this(client, STUDY_PLANNER_DB_NAME);
+	}
 
-		studySessionCollection = client.getDatabase(STUDY_PLANNER_DB_NAME).getCollection(STUDY_SESSION_COLLECTION_NAME);
+	public MongoStudySessionRepository(MongoClient client, String databaseName) {
+
+		studySessionCollection = client.getDatabase(databaseName).getCollection(STUDY_SESSION_COLLECTION_NAME);
 	}
 
 	@Override

@@ -20,8 +20,12 @@ public class MongoTagRepository implements TagRepository {
 	private MongoCollection<Document> tagCollection;
 
 	public MongoTagRepository(MongoClient client) {
+		this(client, STUDY_PLANNER_DB_NAME);
+	}
 
-		tagCollection = client.getDatabase(STUDY_PLANNER_DB_NAME).getCollection(TAG_COLLECTION_NAME);
+	public MongoTagRepository(MongoClient client, String databaseName) {
+
+		tagCollection = client.getDatabase(databaseName).getCollection(TAG_COLLECTION_NAME);
 	}
 
 	@Override
