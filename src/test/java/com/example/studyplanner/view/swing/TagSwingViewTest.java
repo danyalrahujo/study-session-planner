@@ -162,4 +162,78 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		verify(tagController).addTag(new Tag("1", "Java"));
 	}
+
+	@Test
+	public void testDeleteTagButtonShouldDelegateToTagControllerDeleteTag() {
+
+		Tag tag = new Tag("1", "Java");
+
+		GuiActionRunner.execute(() -> tagSwingView.addTag(tag));
+
+		window.list("tagList").selectItem(0);
+
+		window.button("deleteTagButton").click();
+
+		verify(tagController).deleteTag(tag);
+	}
+
+	@Test
+	public void testUpdateTagButtonShouldBeEnabledOnlyWhenATagIsSelected() {
+
+		Tag tag = new Tag("1", "Java");
+
+		GuiActionRunner.execute(() -> tagSwingView.addTag(tag));
+
+		window.button("updateTagButton").requireDisabled();
+
+		window.list("tagList").selectItem(0);
+
+		window.button("updateTagButton").requireEnabled();
+
+		window.list("tagList").clearSelection();
+
+		window.button("updateTagButton").requireDisabled();
+	}
+
+	@Test
+	public void testSelectingTagShouldPopulateTagNameTextField() {
+
+		Tag tag = new Tag("1", "Java");
+
+		GuiActionRunner.execute(() -> tagSwingView.addTag(tag));
+
+		window.list("tagList").selectItem(0);
+
+		window.textBox("tagNameTextBox").requireText("Java");
+	}
+
+	@Test
+	public void testUpdateTagButtonShouldDelegateToTagControllerUpdateTag() {
+
+		Tag tag = new Tag("1", "Java");
+
+		GuiActionRunner.execute(() -> tagSwingView.addTag(tag));
+
+		window.list("tagList").selectItem(0);
+
+		window.textBox("tagNameTextBox").setText("Spring");
+
+		window.button("updateTagButton").click();
+
+		verify(tagController).updateTag(tag);
+
+		assertThat(tag.getName()).isEqualTo("Spring");
+	}
+
+	@Test
+	public void testDisplayTagsShouldClearErrorMessage() {
+
+		Tag tag = new Tag("1", "Java");
+
+		GuiActionRunner.execute(() -> tagSwingView.showTagError("error", tag));
+
+		GuiActionRunner.execute(() -> tagSwingView.displayTags(Arrays.asList(tag)));
+
+		window.label("errorMessageLabel").requireText("");
+	}
 }
