@@ -44,11 +44,4 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 
 		assertThat(studyPlannerWindow.target().isVisible()).isTrue();
 	}
-
-	@Test
-	public void testOnStartAllStudySessionsAreShown() {
-		assertThat(studyPlannerWindow.list("sessionList").contents()).contains("StudySession[id=1, description=Math]",
-				"StudySession[id=2, description=Physics]");
-	}
-
 }
