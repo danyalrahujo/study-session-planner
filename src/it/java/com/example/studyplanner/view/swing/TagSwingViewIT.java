@@ -34,4 +34,20 @@ public class TagSwingViewIT extends AssertJSwingJUnitTestCase {
 
 		window.requireVisible();
 	}
+
+	@Test
+	@GUITest
+	public void testAddButtonInitiallyDisabled() {
+
+		window.button("addTagButton").requireDisabled();
+	}
+
+	@Test
+	@GUITest
+	public void testAddButtonEnabledWhenTextEntered() {
+
+		window.textBox("tagNameTextBox").enterText("Java");
+
+		window.button("addTagButton").requireEnabled();
+	}
 }

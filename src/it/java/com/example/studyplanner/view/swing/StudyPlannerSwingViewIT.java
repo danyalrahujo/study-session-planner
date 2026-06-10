@@ -35,4 +35,21 @@ public class StudyPlannerSwingViewIT extends AssertJSwingJUnitTestCase {
 
 		window.requireVisible();
 	}
+
+	@Test
+	@GUITest
+	public void testAddButtonInitiallyDisabled() {
+
+		window.button("addSessionButton").requireDisabled();
+	}
+
+	@Test
+	@GUITest
+	public void testAddButtonEnabledWhenFieldsFilled() {
+
+		window.textBox("idTextBox").enterText("1");
+		window.textBox("descriptionTextBox").enterText("Study TDD");
+
+		window.button("addSessionButton").requireEnabled();
+	}
 }
