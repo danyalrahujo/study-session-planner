@@ -33,11 +33,12 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		tagSwingView = GuiActionRunner.execute(() -> {
 			TagSwingView view = new TagSwingView();
-
 			view.setTagController(tagController);
-
 			return view;
 		});
+
+		window = new FrameFixture(robot(), tagSwingView);
+		window.show();
 	}
 
 	@Override

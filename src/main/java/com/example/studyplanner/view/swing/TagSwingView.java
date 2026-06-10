@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
+import com.example.studyplanner.controller.TagController;
 import com.example.studyplanner.model.Tag;
 
 public class TagSwingView extends JFrame {
@@ -30,6 +31,11 @@ public class TagSwingView extends JFrame {
 	private DefaultListModel<Tag> listTagsModel;
 	private JButton deleteTagButton;
 	private JLabel errorMessageLabel;
+	private TagController tagController;
+
+	public void setTagController(TagController tagController) {
+		this.tagController = tagController;
+	}
 
 	DefaultListModel<Tag> getListTagsModel() {
 		return listTagsModel;
@@ -58,11 +64,10 @@ public class TagSwingView extends JFrame {
 
 		resetErrorLabel();
 	}
-	
+
 	private void resetErrorLabel() {
 		errorMessageLabel.setText("");
 	}
-
 
 	/**
 	 * Launch the application.
@@ -83,6 +88,7 @@ public class TagSwingView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+
 	public TagSwingView() {
 		setTitle("Tag View");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,6 +132,14 @@ public class TagSwingView extends JFrame {
 		gbc_btnNewButton.gridy = 1;
 
 		contentPane.add(addTagButton, gbc_btnNewButton);
+
+		addTagButton.addActionListener(e -> {
+			String name = tagNameTextBox.getText().trim();
+			if (!name.isEmpty() && tagController != null) {
+				Tag tag = new Tag("1", name);
+				tagController.addTag(tag);
+			}
+		});
 
 		KeyAdapter addButtonEnabler = new KeyAdapter() {
 
