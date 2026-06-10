@@ -180,6 +180,12 @@ public class TagSwingView extends JFrame {
 		deleteTagButton = new JButton("Delete Selected");
 		deleteTagButton.setName("deleteTagButton");
 		deleteTagButton.setEnabled(false);
+		deleteTagButton.addActionListener(e -> {
+			Tag selectedTag = listTags.getSelectedValue();
+			if (selectedTag != null && tagController != null) {
+				tagController.deleteTag(selectedTag);
+			}
+		});
 		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
 		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_2.gridx = 1;

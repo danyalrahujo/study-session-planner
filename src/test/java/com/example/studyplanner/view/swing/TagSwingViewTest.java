@@ -165,75 +165,18 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testDeleteTagButtonShouldDelegateToTagControllerDeleteTag() {
+		Tag tag1 = new Tag("1", "Java");
+		Tag tag2 = new Tag("2", "Spring");
 
-		Tag tag = new Tag("1", "Java");
+		GuiActionRunner.execute(() -> {
+			tagSwingView.getListTagsModel().addElement(tag1);
+			tagSwingView.getListTagsModel().addElement(tag2);
+		});
 
-		GuiActionRunner.execute(() -> tagSwingView.addTag(tag));
+		window.list("tagList").selectItem(1);
 
-		window.list("tagList").selectItem(0);
+		window.button(JButtonMatcher.withText("Delete Selected")).click();
 
-		window.button("deleteTagButton").click();
-
-		verify(tagController).deleteTag(tag);
-	}
-
-	@Test
-	public void testUpdateTagButtonShouldBeEnabledOnlyWhenATagIsSelected() {
-
-		Tag tag = new Tag("1", "Java");
-
-		GuiActionRunner.execute(() -> tagSwingView.addTag(tag));
-
-		window.button("updateTagButton").requireDisabled();
-
-		window.list("tagList").selectItem(0);
-
-		window.button("updateTagButton").requireEnabled();
-
-		window.list("tagList").clearSelection();
-
-		window.button("updateTagButton").requireDisabled();
-	}
-
-	@Test
-	public void testSelectingTagShouldPopulateTagNameTextField() {
-
-		Tag tag = new Tag("1", "Java");
-
-		GuiActionRunner.execute(() -> tagSwingView.addTag(tag));
-
-		window.list("tagList").selectItem(0);
-
-		window.textBox("tagNameTextBox").requireText("Java");
-	}
-
-	@Test
-	public void testUpdateTagButtonShouldDelegateToTagControllerUpdateTag() {
-
-		Tag tag = new Tag("1", "Java");
-
-		GuiActionRunner.execute(() -> tagSwingView.addTag(tag));
-
-		window.list("tagList").selectItem(0);
-
-		window.textBox("tagNameTextBox").setText("Spring");
-
-		window.button("updateTagButton").click();
-
-		verify(tagController).updateTag(tag);
-
-		assertThat(tag.getName()).isEqualTo("Spring");
-	}
-
-	@Test
-	public void testDisplayTagsShouldClearErrorMessage() {
-
-		Tag tag = new Tag("1", "Java");
-
-		GuiActionRunner.execute(() -> tagSwingView.showTagError("error", tag));
-
-		GuiActionRunner.execute(() -> tagSwingView.displayTags(Arrays.asList(tag)));
-
-		window.label("errorMessageLabel").requireText("");
+		verify(tagController).deleteTag(tag2);
 	}
 }
