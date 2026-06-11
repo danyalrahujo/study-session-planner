@@ -10,6 +10,7 @@
 	<name>study-session-planner</name>
 
 	<properties>
+		<sonar-maven-plugin-version>5.1.0.4751</sonar-maven-plugin-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -178,6 +179,13 @@
 						</dependency>
 					</dependencies>
 				</plugin>
+
+				<plugin>
+					<groupId>org.sonarsource.scanner.maven</groupId>
+					<artifactId>sonar-maven-plugin</artifactId>
+					<version>${sonar-maven-plugin-version}</version>
+				</plugin>
+				
 			</plugins>
 		</pluginManagement>
 
