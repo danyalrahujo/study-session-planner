@@ -36,40 +36,31 @@ public class StudyPlannerAppSwing implements Callable<Void> {
 
 	@Override
 	public Void call() throws Exception {
-
 		EventQueue.invokeLater(() -> {
-
 			try {
-
 				MongoClient client = new MongoClient(new ServerAddress(mongoHost, mongoPort));
 
 				MongoStudySessionRepository studySessionRepository = new MongoStudySessionRepository(client,
 						databaseName);
-
 				MongoTagRepository tagRepository = new MongoTagRepository(client, databaseName);
 
 				StudyPlannerSwingView studyPlannerView = new StudyPlannerSwingView();
-
 				TagSwingView tagView = new TagSwingView();
 
 				StudySessionController studySessionController = new StudySessionController(studySessionRepository,
 						studyPlannerView);
-
 				TagController tagController = new TagController(tagRepository, tagView);
 
 				studyPlannerView.setStudySessionController(studySessionController);
-
 				tagView.setTagController(tagController);
 
 				studyPlannerView.displayStudySessions(studySessionRepository.findAll());
-
 				tagView.displayTags(tagRepository.findAll());
 
 				studyPlannerView.setVisible(true);
 				tagView.setVisible(true);
 
 			} catch (Exception e) {
-
 				Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception", e);
 			}
 		});

@@ -1,5 +1,11 @@
 package com.example.studyplanner.view.swing;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.verify;
+
+import java.util.Arrays;
+
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.core.matcher.JLabelMatcher;
@@ -7,14 +13,11 @@ import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
-import com.example.studyplanner.model.Tag;
-import static org.assertj.core.api.Assertions.assertThat;
-import java.util.Arrays;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import static org.mockito.Mockito.verify;
 
 import com.example.studyplanner.controller.TagController;
+import com.example.studyplanner.model.Tag;
 
 public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 
@@ -160,7 +163,7 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		window.button(JButtonMatcher.withText("Add Tag")).click();
 
-		verify(tagController).addTag(new Tag("1", "Java"));
+		verify(tagController).addTag(argThat(tag -> tag != null && "Java".equals(tag.getName())));
 	}
 
 	@Test

@@ -7,6 +7,7 @@ import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.UUID;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -45,36 +46,32 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 	}
 
 	public void showTagError(String message, Tag tag) {
-
 		errorMessageLabel.setText(message + ": " + tag);
 	}
 
 	public void displayTags(List<Tag> tags) {
-
+		listTagsModel.clear();
 		tags.forEach(listTagsModel::addElement);
 	}
 
 	public void addTag(Tag tag) {
-
 		listTagsModel.addElement(tag);
-
 		resetErrorLabel();
+		tagNameTextBox.setText("");
+		listTags.clearSelection();
 	}
 
 	public void removeTag(Tag tag) {
-
 		listTagsModel.removeElement(tag);
-
 		resetErrorLabel();
+		tagNameTextBox.setText("");
+		listTags.clearSelection();
 	}
 
 	private void resetErrorLabel() {
 		errorMessageLabel.setText("");
 	}
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -87,10 +84,6 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 			}
 		});
 	}
-
-	/**
-	 * Create the frame.
-	 */
 
 	public TagSwingView() {
 		setTitle("Tag View");
@@ -133,23 +126,20 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 		gbc_btnNewButton.gridwidth = 2;
 		gbc_btnNewButton.gridx = 0;
 		gbc_btnNewButton.gridy = 1;
-
 		contentPane.add(addTagButton, gbc_btnNewButton);
 
 		addTagButton.addActionListener(e -> {
 			String name = tagNameTextBox.getText().trim();
 
 			if (!name.isEmpty() && tagController != null) {
-				Tag tag = new Tag("1", name);
+				Tag tag = new Tag(UUID.randomUUID().toString(), name);
 				tagController.addTag(tag);
 			}
 		});
 
 		KeyAdapter addButtonEnabler = new KeyAdapter() {
-
 			@Override
 			public void keyReleased(KeyEvent e) {
-
 				addTagButton.setEnabled(!tagNameTextBox.getText().trim().isEmpty());
 			}
 		};
@@ -169,9 +159,7 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 		listTags = new JList<>(listTagsModel);
 		scrollPane.setViewportView(listTags);
 		listTags.addListSelectionListener(e -> {
-
 			Tag selected = listTags.getSelectedValue();
-
 			boolean selectedItem = selected != null;
 
 			deleteTagButton.setEnabled(selectedItem);
@@ -192,16 +180,13 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton_1.gridx = 0;
 		gbc_btnNewButton_1.gridy = 3;
-
 		contentPane.add(updateTagButton, gbc_btnNewButton_1);
-		updateTagButton.addActionListener(e -> {
 
+		updateTagButton.addActionListener(e -> {
 			Tag selected = listTags.getSelectedValue();
 
 			if (selected != null && tagController != null) {
-
-				Tag updatedTag = new Tag(selected.getId(), tagNameTextBox.getText());
-
+				Tag updatedTag = new Tag(selected.getId(), tagNameTextBox.getText().trim());
 				tagController.updateTag(updatedTag);
 			}
 		});
@@ -215,6 +200,7 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 				tagController.deleteTag(selectedTag);
 			}
 		});
+
 		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
 		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_2.gridx = 1;
@@ -229,42 +215,30 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 		gbc_lblNewLabel_1.gridx = 0;
 		gbc_lblNewLabel_1.gridy = 4;
 		contentPane.add(errorMessageLabel, gbc_lblNewLabel_1);
-
 	}
 
 	@Override
 	public void showStudySessionError(String message, StudySession studySession) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void displayStudySessions(List<StudySession> studySessions) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void addStudySession(StudySession studySession) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void removeStudySession(StudySession studySession) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void updateStudySession(StudySession studySession) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void updateTag(Tag tag) {
-
 		int index = listTags.getSelectedIndex();
 
 		if (index >= 0) {
@@ -272,20 +246,19 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 		}
 
 		resetErrorLabel();
+		tagNameTextBox.setText("");
+		listTags.clearSelection();
 	}
 
 	@Override
 	public void deleteStudySession(StudySession studySession) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void deleteTag(Tag tag) {
-
 		listTagsModel.removeElement(tag);
-
 		resetErrorLabel();
+		tagNameTextBox.setText("");
+		listTags.clearSelection();
 	}
-
 }
