@@ -69,19 +69,11 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
-
 	public void testMainMethod() {
 
 		TagSwingView.main(new String[] {});
 
-		await()
-
-				.atMost(2, TimeUnit.SECONDS)
-
-				.untilAsserted(() ->
-
-				assertThat(Frame.getFrames().length).isGreaterThan(0));
-
+		await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> assertThat(Frame.getFrames().length).isGreaterThan(0));
 	}
 
 	@Test
@@ -279,13 +271,29 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
+
 	public void testShowTagErrorUpdatesLabel() {
 
 		Tag tag = new Tag("1", "Java");
 
-		GuiActionRunner.execute(() -> tagSwingView.showTagError("error", tag));
+		GuiActionRunner.execute(() ->
 
-		window.label("errorMessageLabel").requireText("error: " + tag);
+		tagSwingView.showTagError("error", tag));
+
+		window.label("errorMessageLabel")
+
+				.requireText("error: " + tag);
+
+		assertThat(
+
+				window.label("errorMessageLabel")
+
+						.target()
+
+						.getText())
+
+				.isEqualTo("error: " + tag);
+
 	}
 
 	@Test
@@ -304,4 +312,5 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		assertThat(tagSwingView.getListTagsModel().size()).isEqualTo(initialSize);
 	}
+
 }
