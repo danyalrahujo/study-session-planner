@@ -2,6 +2,9 @@ package com.example.studyplanner.e2e;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.swing.launcher.ApplicationLauncher.application;
+import static org.awaitility.Awaitility.await;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 
@@ -46,15 +49,12 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 	}
 
 	private void focusStudyPlannerWindow() {
-		tagWindow.target().toBack();
-		studyPlannerWindow.target().toFront();
-		studyPlannerWindow.focus();
+		studyPlannerWindow.show();
 		robot().waitForIdle();
 	}
 
 	private void focusTagWindow() {
-		tagWindow.target().toFront();
-		tagWindow.focus();
+		tagWindow.show();
 		robot().waitForIdle();
 	}
 
@@ -96,7 +96,8 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 		tagWindow.textBox("tagNameTextBox").enterText("Java");
 		tagWindow.button("addTagButton").click();
 
-		assertThat(tagWindow.list("tagList").contents()).anyMatch(item -> item.contains("Java"));
+		await().atMost(2, TimeUnit.SECONDS).untilAsserted(
+				() -> assertThat(tagWindow.list("tagList").contents()).anyMatch(e -> e.contains("Java")));
 	}
 
 	@Test
@@ -147,9 +148,11 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 
 		tagWindow.list("tagList").selectItem(0);
 
-		robot().waitForIdle();
+		await().atMost(5, TimeUnit.SECONDS)
 
-		tagWindow.button("updateTagButton").requireEnabled();
+				.untilAsserted(() ->
+
+				tagWindow.button("updateTagButton").requireEnabled());
 		tagWindow.textBox("tagNameTextBox").setText("Spring");
 		tagWindow.button("updateTagButton").click();
 
@@ -159,20 +162,21 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testDeleteTagSuccess() {
-		focusTagWindow();
 
 		tagWindow.textBox("tagNameTextBox").enterText("Java");
 		tagWindow.button("addTagButton").click();
-		assertThat(tagWindow.list("tagList").contents()).anyMatch(e -> e.contains("Java"));
+
+		await().atMost(5, TimeUnit.SECONDS).untilAsserted(
+				() -> assertThat(tagWindow.list("tagList").contents()).anyMatch(e -> e.contains("Java")));
 
 		tagWindow.list("tagList").selectItem(0);
 
-		robot().waitForIdle();
+		await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> tagWindow.button("deleteTagButton").requireEnabled());
 
-		tagWindow.button("deleteTagButton").requireEnabled();
 		tagWindow.button("deleteTagButton").click();
 
-		assertThat(tagWindow.list("tagList").contents()).noneMatch(e -> e.contains("Java"));
+		await().atMost(5, TimeUnit.SECONDS).untilAsserted(
+				() -> assertThat(tagWindow.list("tagList").contents()).noneMatch(e -> e.contains("Java")));
 	}
 
 }
