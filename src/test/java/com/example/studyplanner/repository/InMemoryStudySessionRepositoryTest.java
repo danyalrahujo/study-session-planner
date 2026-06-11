@@ -1,13 +1,17 @@
 package com.example.studyplanner.repository;
 
-import com.example.studyplanner.model.StudySession;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import com.example.studyplanner.model.Tag;
-import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import com.example.studyplanner.model.StudySession;
+import com.example.studyplanner.model.Tag;
 
 public class InMemoryStudySessionRepositoryTest {
 
@@ -89,5 +93,63 @@ public class InMemoryStudySessionRepositoryTest {
 		List<StudySession> result = inMemoryStudySessionRepository.findByTag("1");
 
 		assertEquals(1, result.size());
+	}
+
+	@Test
+	public void testFindByIdReturnsNullWhenSessionDoesNotExist() {
+		assertNull(inMemoryStudySessionRepository.findById("999"));
+	}
+
+	@Test
+	public void testUpdateDoesNothingWhenSessionDoesNotExist() {
+		StudySession session = new StudySession("1", "Math", false, "", null);
+
+		inMemoryStudySessionRepository.save(session);
+
+		StudySession updated = new StudySession("999", "Physics", false, "", null);
+
+		inMemoryStudySessionRepository.update(updated);
+
+		assertEquals("Math", inMemoryStudySessionRepository.findById("1").getDescription());
+	}
+
+	@Test
+	public void testFindByTagReturnsEmptyWhenSessionHasNullTags() {
+		StudySession session = new StudySession("1", "Math", false, "", null);
+
+		inMemoryStudySessionRepository.save(session);
+
+		assertTrue(inMemoryStudySessionRepository.findByTag("tag1").isEmpty());
+	}
+
+	@Test
+	public void testFindByTagReturnsMatchingSession() {
+		Tag tag = new Tag("tag1", "Java");
+
+		List<Tag> tags = new ArrayList<>();
+		tags.add(tag);
+
+		StudySession session = new StudySession("1", "Math", false, "", tags);
+
+		inMemoryStudySessionRepository.save(session);
+
+		List<StudySession> result = inMemoryStudySessionRepository.findByTag("tag1");
+
+		assertEquals(1, result.size());
+		assertEquals(session, result.get(0));
+	}
+
+	@Test
+	public void testFindByTagReturnsEmptyWhenTagDoesNotExist() {
+		Tag tag = new Tag("tag1", "Java");
+
+		List<Tag> tags = new ArrayList<>();
+		tags.add(tag);
+
+		StudySession session = new StudySession("1", "Math", false, "", tags);
+
+		inMemoryStudySessionRepository.save(session);
+
+		assertTrue(inMemoryStudySessionRepository.findByTag("tag999").isEmpty());
 	}
 }
