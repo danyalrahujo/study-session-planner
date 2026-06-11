@@ -17,11 +17,32 @@
 		<pitest-maven-version>1.20.3</pitest-maven-version>
 		<coveralls-maven-plugin-version>4.3.0</coveralls-maven-plugin-version>
 		<jaxb-api-version>2.3.1</jaxb-api-version>
+		<sonar.projectKey>danyalrahujo_study-session-planner</sonar.projectKey>
+		<sonar.organization>danyalrahujo</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
+		<sonar.tests>
+			${project.basedir}/src/test/java,
+			${project.basedir}/src/it/java,
+			${project.basedir}/src/e2e/java
+</sonar.tests>
+
+		<sonar.junit.reportPaths>
+			${project.build.directory}/surefire-reports,
+			${project.build.directory}/failsafe-reports
+</sonar.junit.reportPaths>
+
+		<sonar.coverage.exclusions>
+			**/model/*.*
+</sonar.coverage.exclusions>
+
 	</properties>
 
 	<build>
 
+
 		<pluginManagement>
+
 			<plugins>
 
 				<!-- Build Helper -->
@@ -29,6 +50,7 @@
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>build-helper-maven-plugin</artifactId>
 					<version>3.0.0</version>
+
 
 					<executions>
 						<execution>
@@ -180,12 +202,13 @@
 					</dependencies>
 				</plugin>
 
+				<!-- SonarCloud -->
 				<plugin>
 					<groupId>org.sonarsource.scanner.maven</groupId>
 					<artifactId>sonar-maven-plugin</artifactId>
 					<version>${sonar-maven-plugin-version}</version>
 				</plugin>
-				
+
 			</plugins>
 		</pluginManagement>
 
@@ -205,6 +228,11 @@
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
 			</plugin>
 
 			<!-- PIT -->
@@ -348,7 +376,6 @@
 						</executions>
 
 					</plugin>
-
 				</plugins>
 			</build>
 		</profile>
