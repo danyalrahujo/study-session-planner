@@ -34,6 +34,7 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 	private JButton deleteSessionButton;
 	private JLabel errorMessageLabel;
 	private StudySessionController studySessionController;
+	private JButton updateSessionButton;
 
 	/**
 	 * Launch the application.
@@ -142,10 +143,22 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 		listSessions.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		scrollPane.setViewportView(listSessions);
-		listSessions
-				.addListSelectionListener(e -> deleteSessionButton.setEnabled(listSessions.getSelectedIndex() != -1));
+		listSessions.addListSelectionListener(e -> {
 
-		JButton updateSessionButton = new JButton("Update Session");
+			StudySession selected = listSessions.getSelectedValue();
+
+			boolean selectedItem = selected != null;
+
+			deleteSessionButton.setEnabled(selectedItem);
+			updateSessionButton.setEnabled(selectedItem);
+
+			if (selectedItem) {
+				idTextBox.setText(selected.getId());
+				descriptionTextBox.setText(selected.getDescription());
+			}
+		});
+
+		updateSessionButton = new JButton("Update Session");
 		updateSessionButton.setName("updateSessionButton");
 		updateSessionButton.setEnabled(false);
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
@@ -153,6 +166,18 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 		gbc_btnNewButton_1.gridx = 0;
 		gbc_btnNewButton_1.gridy = 4;
 		contentPane.add(updateSessionButton, gbc_btnNewButton_1);
+		updateSessionButton.addActionListener(e -> {
+
+			StudySession selected = listSessions.getSelectedValue();
+
+			if (selected != null) {
+
+				StudySession updated = new StudySession(selected.getId(), descriptionTextBox.getText(),
+						selected.isCompleted(), selected.getCreatedAt(), selected.getTags());
+
+				studySessionController.updateStudySession(updated);
+			}
+		});
 
 		deleteSessionButton = new JButton("Delete Selected");
 		deleteSessionButton.setName("deleteSessionButton");
@@ -227,8 +252,14 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 
 	@Override
 	public void updateStudySession(StudySession studySession) {
-		// TODO Auto-generated method stub
 
+		int index = listSessions.getSelectedIndex();
+
+		if (index >= 0) {
+			listSessionsModel.set(index, studySession);
+		}
+
+		resetErrorLabel();
 	}
 
 	@Override
@@ -257,8 +288,10 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 
 	@Override
 	public void deleteStudySession(StudySession studySession) {
-		// TODO Auto-generated method stub
 
+		listSessionsModel.removeElement(studySession);
+
+		resetErrorLabel();
 	}
 
 	@Override

@@ -20,9 +20,11 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import com.example.studyplanner.controller.TagController;
+import com.example.studyplanner.model.StudySession;
 import com.example.studyplanner.model.Tag;
+import com.example.studyplanner.view.StudyPlannerView;
 
-public class TagSwingView extends JFrame {
+public class TagSwingView extends JFrame implements StudyPlannerView {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -32,6 +34,7 @@ public class TagSwingView extends JFrame {
 	private JButton deleteTagButton;
 	private JLabel errorMessageLabel;
 	private TagController tagController;
+	private JButton updateTagButton;
 
 	public void setTagController(TagController tagController) {
 		this.tagController = tagController;
@@ -135,6 +138,7 @@ public class TagSwingView extends JFrame {
 
 		addTagButton.addActionListener(e -> {
 			String name = tagNameTextBox.getText().trim();
+
 			if (!name.isEmpty() && tagController != null) {
 				Tag tag = new Tag("1", name);
 				tagController.addTag(tag);
@@ -164,18 +168,43 @@ public class TagSwingView extends JFrame {
 		listTagsModel = new DefaultListModel<>();
 		listTags = new JList<>(listTagsModel);
 		scrollPane.setViewportView(listTags);
-		listTags.addListSelectionListener(e -> deleteTagButton.setEnabled(listTags.getSelectedIndex() != -1));
+		listTags.addListSelectionListener(e -> {
+
+			Tag selected = listTags.getSelectedValue();
+
+			boolean selectedItem = selected != null;
+
+			deleteTagButton.setEnabled(selectedItem);
+			updateTagButton.setEnabled(selectedItem);
+
+			if (selectedItem) {
+				tagNameTextBox.setText(selected.getName());
+			}
+		});
 		listTags.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listTags.setName("tagList");
 
-		JButton btnNewButton_1 = new JButton("Update Tag");
-		btnNewButton_1.setName("updateTagButton");
-		btnNewButton_1.setEnabled(false);
+		updateTagButton = new JButton("Update Tag");
+		updateTagButton.setName("updateTagButton");
+		updateTagButton.setEnabled(false);
+
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton_1.gridx = 0;
 		gbc_btnNewButton_1.gridy = 3;
-		contentPane.add(btnNewButton_1, gbc_btnNewButton_1);
+
+		contentPane.add(updateTagButton, gbc_btnNewButton_1);
+		updateTagButton.addActionListener(e -> {
+
+			Tag selected = listTags.getSelectedValue();
+
+			if (selected != null && tagController != null) {
+
+				Tag updatedTag = new Tag(selected.getId(), tagNameTextBox.getText());
+
+				tagController.updateTag(updatedTag);
+			}
+		});
 
 		deleteTagButton = new JButton("Delete Selected");
 		deleteTagButton.setName("deleteTagButton");
@@ -201,6 +230,62 @@ public class TagSwingView extends JFrame {
 		gbc_lblNewLabel_1.gridy = 4;
 		contentPane.add(errorMessageLabel, gbc_lblNewLabel_1);
 
+	}
+
+	@Override
+	public void showStudySessionError(String message, StudySession studySession) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void displayStudySessions(List<StudySession> studySessions) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void addStudySession(StudySession studySession) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void removeStudySession(StudySession studySession) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void updateStudySession(StudySession studySession) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void updateTag(Tag tag) {
+
+		int index = listTags.getSelectedIndex();
+
+		if (index >= 0) {
+			listTagsModel.set(index, tag);
+		}
+
+		resetErrorLabel();
+	}
+
+	@Override
+	public void deleteStudySession(StudySession studySession) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void deleteTag(Tag tag) {
+
+		listTagsModel.removeElement(tag);
+
+		resetErrorLabel();
 	}
 
 }
