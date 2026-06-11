@@ -202,4 +202,38 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		verify(studySessionController).deleteStudySession(session2);
 	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public void testShowTagErrorThrowsException() {
+
+		studyPlannerSwingView.showTagError("error", null);
+	}
+
+	@Test
+	public void testTagMethodsDoNothing() {
+
+		studyPlannerSwingView.displayTags(null);
+		studyPlannerSwingView.addTag(null);
+		studyPlannerSwingView.removeTag(null);
+		studyPlannerSwingView.updateTag(null);
+		studyPlannerSwingView.deleteTag(null);
+
+		assertThat(studyPlannerSwingView).isNotNull();
+	}
+
+	@Test
+	public void testUpdateButtonShouldDelegateToController() {
+
+		StudySession session = new StudySession("1", "Math", false, "", null);
+
+		GuiActionRunner.execute(() -> studyPlannerSwingView.getListSessionsModel().addElement(session));
+
+		window.list("sessionList").selectItem(0);
+
+		window.textBox("descriptionTextBox").setText("Physics");
+
+		window.button(JButtonMatcher.withText("Update Session")).click();
+
+		verify(studySessionController).updateStudySession(new StudySession("1", "Physics", false, "", null));
+	}
 }
