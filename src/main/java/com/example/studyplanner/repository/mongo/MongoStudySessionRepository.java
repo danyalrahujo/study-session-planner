@@ -57,7 +57,12 @@ public class MongoStudySessionRepository implements StudySessionRepository {
 
 		for (Document document : studySessionCollection.find()) {
 
-			StudySession studySession = new StudySession(document.getString("id"), document.getString("description"),
+			StudySession studySession = new StudySession(
+
+					document.getString("id"),
+
+					document.getString(DESCRIPTION),
+
 					false, null, null);
 
 			studySessions.add(studySession);

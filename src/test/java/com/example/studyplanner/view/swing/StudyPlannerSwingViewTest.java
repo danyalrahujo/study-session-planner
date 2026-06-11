@@ -1,24 +1,21 @@
 package com.example.studyplanner.view.swing;
 
-import org.assertj.swing.annotation.GUITest;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+
+import java.util.Arrays;
+
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.core.matcher.JLabelMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Arrays;
-
-import com.example.studyplanner.model.StudySession;
-
-import static org.mockito.Mockito.verify;
-
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.example.studyplanner.controller.StudySessionController;
+import com.example.studyplanner.model.StudySession;
 
 public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 
