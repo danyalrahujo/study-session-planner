@@ -1,12 +1,14 @@
 package com.example.studyplanner.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
+import static org.awaitility.Awaitility.await;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 
+import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.matcher.JButtonMatcher;
@@ -67,13 +69,19 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
-	public void testMainMethod() throws Exception {
 
-		StudyPlannerSwingView.main(new String[] {});
+	public void testMainMethod() {
 
-		Thread.sleep(500);
+		TagSwingView.main(new String[] {});
 
-		assertThat(true).isTrue();
+		await()
+
+				.atMost(2, TimeUnit.SECONDS)
+
+				.untilAsserted(() ->
+
+				assertThat(Frame.getFrames().length).isGreaterThan(0));
+
 	}
 
 	@Test
@@ -242,8 +250,7 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		localWindow.button(JButtonMatcher.withText("Add Tag")).click();
 
-		assertThat(view.getListTagsModel().size()).isEqualTo(0);
-
+		assertThat(view.getListTagsModel().size()).isZero();
 		localWindow.cleanUp();
 	}
 
@@ -267,6 +274,8 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 	public void testDeleteTagButtonDoesNothingWhenNothingSelected() {
 
 		window.button(JButtonMatcher.withText("Delete Selected")).requireDisabled();
+
+		assertThat(window.button(JButtonMatcher.withText("Delete Selected")).target().isEnabled()).isFalse();
 	}
 
 	@Test
@@ -282,6 +291,8 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testStudySessionMethodsDoNothing() {
 
+		int initialSize = tagSwingView.getListTagsModel().size();
+
 		StudySession session = new StudySession("1", "Math", false, "", null);
 
 		tagSwingView.showStudySessionError("error", session);
@@ -291,6 +302,6 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 		tagSwingView.updateStudySession(session);
 		tagSwingView.deleteStudySession(session);
 
-		assertNotNull(tagSwingView);
+		assertThat(tagSwingView.getListTagsModel().size()).isEqualTo(initialSize);
 	}
 }
