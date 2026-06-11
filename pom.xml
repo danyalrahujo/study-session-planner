@@ -33,7 +33,7 @@
 </sonar.junit.reportPaths>
 
 		<sonar.coverage.exclusions>
-			**/model/*.*
+			**/app/swing/StudyPlannerAppSwing.java
 </sonar.coverage.exclusions>
 
 	</properties>
