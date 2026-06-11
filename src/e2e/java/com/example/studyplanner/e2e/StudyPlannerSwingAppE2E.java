@@ -169,9 +169,14 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 		await().atMost(5, TimeUnit.SECONDS).untilAsserted(
 				() -> assertThat(tagWindow.list("tagList").contents()).anyMatch(e -> e.contains("Java")));
 
+		await().atMost(5, TimeUnit.SECONDS)
+				.untilAsserted(() -> assertThat(tagWindow.list("tagList").contents().length).isGreaterThan(0));
+
 		tagWindow.list("tagList").selectItem(0);
 
-		await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> tagWindow.button("deleteTagButton").requireEnabled());
+		robot().waitForIdle();
+
+		tagWindow.button("deleteTagButton").requireEnabled();
 
 		tagWindow.button("deleteTagButton").click();
 
