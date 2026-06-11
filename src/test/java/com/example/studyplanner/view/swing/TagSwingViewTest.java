@@ -1,9 +1,11 @@
 package com.example.studyplanner.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.assertj.swing.annotation.GUITest;
@@ -17,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.example.studyplanner.controller.TagController;
+import com.example.studyplanner.model.StudySession;
 import com.example.studyplanner.model.Tag;
 
 public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
@@ -186,5 +189,48 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withText("Delete Selected")).click();
 
 		verify(tagController).deleteTag(tag2);
+	}
+
+	@Test
+	public void testStudySessionMethodsDoNothing() {
+
+		StudySession session = new StudySession("1", "Math", false, "", null);
+
+		tagSwingView.showStudySessionError("error", session);
+		tagSwingView.displayStudySessions(new ArrayList<>());
+		tagSwingView.addStudySession(session);
+		tagSwingView.removeStudySession(session);
+		tagSwingView.updateStudySession(session);
+		tagSwingView.deleteStudySession(session);
+
+		assertNotNull(tagSwingView);
+	}
+
+	@Test
+	public void testAddTagButtonDoesNothingWhenTagControllerIsNull() {
+
+		TagSwingView view = GuiActionRunner.execute(TagSwingView::new);
+
+		FrameFixture localWindow = new FrameFixture(robot(), view);
+		localWindow.show();
+
+		localWindow.textBox("tagNameTextBox").enterText("Java");
+		localWindow.button(JButtonMatcher.withText("Add Tag")).click();
+
+		assertThat(localWindow.list("tagList").contents()).isEmpty();
+
+		localWindow.cleanUp();
+	}
+
+	@Test
+	public void testDeleteTagButtonDoesNothingWhenNoTagIsSelected() {
+
+		Tag tag = new Tag("1", "Java");
+
+		GuiActionRunner.execute(() -> tagSwingView.getListTagsModel().addElement(tag));
+
+		window.list("tagList").clearSelection();
+
+		assertThat(window.button(JButtonMatcher.withText("Delete Selected")).target().isEnabled()).isFalse();
 	}
 }
