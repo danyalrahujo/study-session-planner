@@ -1,5 +1,6 @@
 package com.example.studyplanner.view.swing;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.swing.edt.GuiActionRunner.execute;
 
 import org.assertj.swing.annotation.GUITest;
@@ -14,7 +15,7 @@ public class StudyPlannerSwingViewIT extends AssertJSwingJUnitTestCase {
 	@Override
 	protected void onSetUp() {
 
-		StudyPlannerSwingView view = execute(() -> new StudyPlannerSwingView());
+		StudyPlannerSwingView view = execute(StudyPlannerSwingView::new);
 
 		window = new FrameFixture(robot(), view);
 
@@ -32,24 +33,24 @@ public class StudyPlannerSwingViewIT extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testWindowIsVisible() {
-
 		window.requireVisible();
+		assertThat(window.target().isVisible()).isTrue();
 	}
 
 	@Test
 	@GUITest
 	public void testAddButtonInitiallyDisabled() {
-
 		window.button("addSessionButton").requireDisabled();
+		assertThat(window.button("addSessionButton").target().isEnabled()).isFalse();
 	}
 
 	@Test
 	@GUITest
 	public void testAddButtonEnabledWhenFieldsFilled() {
-
 		window.textBox("idTextBox").enterText("1");
 		window.textBox("descriptionTextBox").enterText("Study TDD");
 
 		window.button("addSessionButton").requireEnabled();
+		assertThat(window.button("addSessionButton").target().isEnabled()).isTrue();
 	}
 }

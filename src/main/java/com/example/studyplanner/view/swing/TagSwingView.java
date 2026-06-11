@@ -1,6 +1,7 @@
 package com.example.studyplanner.view.swing;
 
 import java.awt.EventQueue;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.example.studyplanner.controller.TagController;
@@ -34,7 +36,7 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 	private DefaultListModel<Tag> listTagsModel;
 	private JButton deleteTagButton;
 	private JLabel errorMessageLabel;
-	private TagController tagController;
+	private transient TagController tagController;
 	private JButton updateTagButton;
 
 	public void setTagController(TagController tagController) {
@@ -61,11 +63,18 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 		listTags.clearSelection();
 	}
 
+	@Override
+
 	public void removeTag(Tag tag) {
+
 		listTagsModel.removeElement(tag);
+
 		resetErrorLabel();
+
 		tagNameTextBox.setText("");
+
 		listTags.clearSelection();
+
 	}
 
 	private void resetErrorLabel() {
@@ -73,60 +82,58 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 	}
 
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TagSwingView frame = new TagSwingView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				TagSwingView frame = new TagSwingView();
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
 
 	public TagSwingView() {
 		setTitle("Tag View");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[] { 0, 0, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0 };
-		gbl_contentPane.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
-		contentPane.setLayout(gbl_contentPane);
+		GridBagLayout contentPaneLayout = new GridBagLayout();
+		contentPaneLayout.columnWidths = new int[] { 0, 0, 0 };
+		contentPaneLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0 };
+		contentPaneLayout.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		contentPaneLayout.rowWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
+		contentPane.setLayout(contentPaneLayout);
 
 		JLabel tagNameLabel = new JLabel("Tag Name");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 0;
-		contentPane.add(tagNameLabel, gbc_lblNewLabel);
+		GridBagConstraints tagNameLabelConstraints = new GridBagConstraints();
+		tagNameLabelConstraints.insets = new Insets(0, 0, 5, 5);
+		tagNameLabelConstraints.anchor = GridBagConstraints.EAST;
+		tagNameLabelConstraints.gridx = 0;
+		tagNameLabelConstraints.gridy = 0;
+		contentPane.add(tagNameLabel, tagNameLabelConstraints);
 
 		tagNameTextBox = new JTextField();
 		tagNameTextBox.setName("tagNameTextBox");
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 0);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 0;
-		contentPane.add(tagNameTextBox, gbc_textField);
+		GridBagConstraints tagNameTextFieldConstraints = new GridBagConstraints();
+		tagNameTextFieldConstraints.insets = new Insets(0, 0, 5, 0);
+		tagNameTextFieldConstraints.fill = GridBagConstraints.HORIZONTAL;
+		tagNameTextFieldConstraints.gridx = 1;
+		tagNameTextFieldConstraints.gridy = 0;
+		contentPane.add(tagNameTextBox, tagNameTextFieldConstraints);
 		tagNameTextBox.setColumns(10);
 
 		JButton addTagButton = new JButton("Add Tag");
 		addTagButton.setName("addTagButton");
 		addTagButton.setEnabled(false);
 
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton.gridwidth = 2;
-		gbc_btnNewButton.gridx = 0;
-		gbc_btnNewButton.gridy = 1;
-		contentPane.add(addTagButton, gbc_btnNewButton);
+		GridBagConstraints addTagButtonConstraints = new GridBagConstraints();
+		addTagButtonConstraints.insets = new Insets(0, 0, 5, 0);
+		addTagButtonConstraints.gridwidth = 2;
+		addTagButtonConstraints.gridx = 0;
+		addTagButtonConstraints.gridy = 1;
+		contentPane.add(addTagButton, addTagButtonConstraints);
 
 		addTagButton.addActionListener(e -> {
 			String name = tagNameTextBox.getText().trim();
@@ -147,13 +154,13 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 		tagNameTextBox.addKeyListener(addButtonEnabler);
 
 		JScrollPane scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridwidth = 2;
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 2;
-		contentPane.add(scrollPane, gbc_scrollPane);
+		GridBagConstraints scrollPaneConstraints = new GridBagConstraints();
+		scrollPaneConstraints.insets = new Insets(0, 0, 5, 0);
+		scrollPaneConstraints.fill = GridBagConstraints.BOTH;
+		scrollPaneConstraints.gridwidth = 2;
+		scrollPaneConstraints.gridx = 0;
+		scrollPaneConstraints.gridy = 2;
+		contentPane.add(scrollPane, scrollPaneConstraints);
 
 		listTagsModel = new DefaultListModel<>();
 		listTags = new JList<>(listTagsModel);
@@ -176,11 +183,11 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 		updateTagButton.setName("updateTagButton");
 		updateTagButton.setEnabled(false);
 
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton_1.gridx = 0;
-		gbc_btnNewButton_1.gridy = 3;
-		contentPane.add(updateTagButton, gbc_btnNewButton_1);
+		GridBagConstraints updateTagButtonConstraints = new GridBagConstraints();
+		updateTagButtonConstraints.insets = new Insets(0, 0, 5, 5);
+		updateTagButtonConstraints.gridx = 0;
+		updateTagButtonConstraints.gridy = 3;
+		contentPane.add(updateTagButton, updateTagButtonConstraints);
 
 		updateTagButton.addActionListener(e -> {
 			Tag selected = listTags.getSelectedValue();
@@ -201,40 +208,50 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 			}
 		});
 
-		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
-		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_2.gridx = 1;
-		gbc_btnNewButton_2.gridy = 3;
-		contentPane.add(deleteTagButton, gbc_btnNewButton_2);
+		GridBagConstraints deleteTagButtonConstraints = new GridBagConstraints();
+		deleteTagButtonConstraints.insets = new Insets(0, 0, 5, 0);
+		deleteTagButtonConstraints.gridx = 1;
+		deleteTagButtonConstraints.gridy = 3;
+		contentPane.add(deleteTagButton, deleteTagButtonConstraints);
 
 		errorMessageLabel = new JLabel("");
 		errorMessageLabel.setName("errorMessageLabel");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.gridwidth = 2;
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_1.gridx = 0;
-		gbc_lblNewLabel_1.gridy = 4;
-		contentPane.add(errorMessageLabel, gbc_lblNewLabel_1);
+		GridBagConstraints errorMessageLabelConstraints = new GridBagConstraints();
+		errorMessageLabelConstraints.gridwidth = 2;
+		errorMessageLabelConstraints.insets = new Insets(0, 0, 0, 5);
+		errorMessageLabelConstraints.gridx = 0;
+		errorMessageLabelConstraints.gridy = 4;
+		contentPane.add(errorMessageLabel, errorMessageLabelConstraints);
 	}
 
 	@Override
 	public void showStudySessionError(String message, StudySession studySession) {
+		// Intentionally left blank: study sessions are managed in
+		// StudyPlannerSwingView.
 	}
 
 	@Override
 	public void displayStudySessions(List<StudySession> studySessions) {
+		// Intentionally left blank: study sessions are managed in
+		// StudyPlannerSwingView.
 	}
 
 	@Override
 	public void addStudySession(StudySession studySession) {
+		// Intentionally left blank: study sessions are managed in
+		// StudyPlannerSwingView.
 	}
 
 	@Override
 	public void removeStudySession(StudySession studySession) {
+		// Intentionally left blank: study sessions are managed in
+		// StudyPlannerSwingView.
 	}
 
 	@Override
 	public void updateStudySession(StudySession studySession) {
+		// Intentionally left blank: study sessions are managed in
+		// StudyPlannerSwingView.
 	}
 
 	@Override
@@ -252,13 +269,12 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 
 	@Override
 	public void deleteStudySession(StudySession studySession) {
+		// Intentionally left blank: study sessions are managed in
+		// StudyPlannerSwingView.
 	}
 
 	@Override
 	public void deleteTag(Tag tag) {
-		listTagsModel.removeElement(tag);
-		resetErrorLabel();
-		tagNameTextBox.setText("");
-		listTags.clearSelection();
+		removeTag(tag);
 	}
 }

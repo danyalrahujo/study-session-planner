@@ -54,16 +54,13 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 	public void testControlsInitialStates() {
 
 		window.label(JLabelMatcher.withText("Tag Name"));
-
 		window.textBox("tagNameTextBox").requireEnabled();
-
 		window.button(JButtonMatcher.withText("Add Tag")).requireDisabled();
-
 		window.list("tagList");
-
 		window.button(JButtonMatcher.withText("Delete Selected")).requireDisabled();
-
 		window.label("errorMessageLabel").requireText("");
+
+		assertThat(window.textBox("tagNameTextBox").target().isEnabled()).isTrue();
 	}
 
 	@Test
@@ -72,20 +69,22 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("tagNameTextBox").enterText("Java");
 
 		window.button(JButtonMatcher.withText("Add Tag")).requireEnabled();
+
+		assertThat(window.button(JButtonMatcher.withText("Add Tag")).target().isEnabled()).isTrue();
 	}
 
 	@Test
 	public void testWhenTagNameIsBlankThenAddTagButtonShouldBeDisabled() {
 
 		window.textBox("tagNameTextBox").enterText("Java");
-
 		window.button(JButtonMatcher.withText("Add Tag")).requireEnabled();
 
 		window.textBox("tagNameTextBox").setText("");
-
 		window.textBox("tagNameTextBox").enterText(" ");
 
 		window.button(JButtonMatcher.withText("Add Tag")).requireDisabled();
+
+		assertThat(window.button(JButtonMatcher.withText("Add Tag")).target().isEnabled()).isFalse();
 	}
 
 	@Test
@@ -99,9 +98,13 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		window.button(JButtonMatcher.withText("Delete Selected")).requireEnabled();
 
+		assertThat(window.button(JButtonMatcher.withText("Delete Selected")).target().isEnabled()).isTrue();
+
 		window.list("tagList").clearSelection();
 
 		window.button(JButtonMatcher.withText("Delete Selected")).requireDisabled();
+
+		assertThat(window.button(JButtonMatcher.withText("Delete Selected")).target().isEnabled()).isFalse();
 	}
 
 	@Test
@@ -123,6 +126,8 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> tagSwingView.showTagError("error message", tag));
 
 		window.label("errorMessageLabel").requireText("error message: " + tag);
+
+		assertThat(window.label("errorMessageLabel").target().getText()).isEqualTo("error message: " + tag);
 	}
 
 	@Test

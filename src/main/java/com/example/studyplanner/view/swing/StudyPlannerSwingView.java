@@ -23,6 +23,7 @@ import com.example.studyplanner.controller.StudySessionController;
 import com.example.studyplanner.model.StudySession;
 import com.example.studyplanner.model.Tag;
 import com.example.studyplanner.view.StudyPlannerView;
+import javax.swing.WindowConstants;
 
 public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 
@@ -34,81 +35,79 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 	private DefaultListModel<StudySession> listSessionsModel;
 	private JButton deleteSessionButton;
 	private JLabel errorMessageLabel;
-	private StudySessionController studySessionController;
+	private transient StudySessionController studySessionController;
 	private JButton updateSessionButton;
 
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StudyPlannerSwingView frame = new StudyPlannerSwingView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				StudyPlannerSwingView frame = new StudyPlannerSwingView();
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
 
 	public StudyPlannerSwingView() {
 		setTitle("Study Planner View");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[] { 0, 0, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0 };
-		gbl_contentPane.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
-		contentPane.setLayout(gbl_contentPane);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[] { 0, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0 };
+		gridBagLayout.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
+		contentPane.setLayout(gridBagLayout);
 
-		JLabel lblNewLabel = new JLabel("id");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 0;
-		contentPane.add(lblNewLabel, gbc_lblNewLabel);
+		JLabel idLabel = new JLabel("id");
+		GridBagConstraints idLabelConstraints = new GridBagConstraints();
+		idLabelConstraints.insets = new Insets(0, 0, 5, 5);
+		idLabelConstraints.anchor = GridBagConstraints.EAST;
+		idLabelConstraints.gridx = 0;
+		idLabelConstraints.gridy = 0;
+		contentPane.add(idLabel, idLabelConstraints);
 
 		idTextBox = new JTextField();
 		idTextBox.setName("idTextBox");
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 0);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 0;
-		contentPane.add(idTextBox, gbc_textField);
+		GridBagConstraints idTextFieldConstraints = new GridBagConstraints();
+		idTextFieldConstraints.insets = new Insets(0, 0, 5, 0);
+		idTextFieldConstraints.fill = GridBagConstraints.HORIZONTAL;
+		idTextFieldConstraints.gridx = 1;
+		idTextFieldConstraints.gridy = 0;
+		contentPane.add(idTextBox, idTextFieldConstraints);
 		idTextBox.setColumns(10);
 
-		JLabel lblNewLabel_1 = new JLabel("description");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.gridx = 0;
-		gbc_lblNewLabel_1.gridy = 1;
-		contentPane.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		JLabel descriptionLabel = new JLabel("description");
+		GridBagConstraints descriptionLabelConstraints = new GridBagConstraints();
+		descriptionLabelConstraints.anchor = GridBagConstraints.EAST;
+		descriptionLabelConstraints.insets = new Insets(0, 0, 5, 5);
+		descriptionLabelConstraints.gridx = 0;
+		descriptionLabelConstraints.gridy = 1;
+		contentPane.add(descriptionLabel, descriptionLabelConstraints);
 
 		descriptionTextBox = new JTextField();
 		descriptionTextBox.setName("descriptionTextBox");
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 1;
-		gbc_textField_1.gridy = 1;
-		contentPane.add(descriptionTextBox, gbc_textField_1);
+		GridBagConstraints descriptionTextFieldConstraints = new GridBagConstraints();
+		descriptionTextFieldConstraints.insets = new Insets(0, 0, 5, 0);
+		descriptionTextFieldConstraints.fill = GridBagConstraints.HORIZONTAL;
+		descriptionTextFieldConstraints.gridx = 1;
+		descriptionTextFieldConstraints.gridy = 1;
+		contentPane.add(descriptionTextBox, descriptionTextFieldConstraints);
 		descriptionTextBox.setColumns(10);
 
 		JButton addSessionButton = new JButton("Add Session");
 		addSessionButton.setName("addSessionButton");
 		addSessionButton.setEnabled(false);
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton.gridwidth = 2;
-		gbc_btnNewButton.gridx = 0;
-		gbc_btnNewButton.gridy = 2;
-		contentPane.add(addSessionButton, gbc_btnNewButton);
+		GridBagConstraints addSessionButtonConstraints = new GridBagConstraints();
+		addSessionButtonConstraints.insets = new Insets(0, 0, 5, 0);
+		addSessionButtonConstraints.gridwidth = 2;
+		addSessionButtonConstraints.gridx = 0;
+		addSessionButtonConstraints.gridy = 2;
+		contentPane.add(addSessionButton, addSessionButtonConstraints);
 
 		addSessionButton.addActionListener(e -> studySessionController.addStudySession(
 				new StudySession(idTextBox.getText().trim(), descriptionTextBox.getText().trim(), false, "", null)));
@@ -125,13 +124,13 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 		descriptionTextBox.addKeyListener(addButtonEnabler);
 
 		JScrollPane scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridwidth = 2;
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 3;
-		contentPane.add(scrollPane, gbc_scrollPane);
+		GridBagConstraints scrollPaneConstraints = new GridBagConstraints();
+		scrollPaneConstraints.insets = new Insets(0, 0, 5, 0);
+		scrollPaneConstraints.fill = GridBagConstraints.BOTH;
+		scrollPaneConstraints.gridwidth = 2;
+		scrollPaneConstraints.gridx = 0;
+		scrollPaneConstraints.gridy = 3;
+		contentPane.add(scrollPane, scrollPaneConstraints);
 
 		listSessionsModel = new DefaultListModel<>();
 		listSessions = new JList<>(listSessionsModel);
@@ -155,11 +154,11 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 		updateSessionButton = new JButton("Update Session");
 		updateSessionButton.setName("updateSessionButton");
 		updateSessionButton.setEnabled(false);
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton_1.gridx = 0;
-		gbc_btnNewButton_1.gridy = 4;
-		contentPane.add(updateSessionButton, gbc_btnNewButton_1);
+		GridBagConstraints updateSessionButtonConstraints = new GridBagConstraints();
+		updateSessionButtonConstraints.insets = new Insets(0, 0, 5, 5);
+		updateSessionButtonConstraints.gridx = 0;
+		updateSessionButtonConstraints.gridy = 4;
+		contentPane.add(updateSessionButton, updateSessionButtonConstraints);
 
 		updateSessionButton.addActionListener(e -> {
 			StudySession selected = listSessions.getSelectedValue();
@@ -178,21 +177,21 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 		deleteSessionButton
 				.addActionListener(e -> studySessionController.deleteStudySession(listSessions.getSelectedValue()));
 
-		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
-		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_2.gridx = 1;
-		gbc_btnNewButton_2.gridy = 4;
-		contentPane.add(deleteSessionButton, gbc_btnNewButton_2);
+		GridBagConstraints deleteSessionButtonConstraints = new GridBagConstraints();
+		deleteSessionButtonConstraints.insets = new Insets(0, 0, 5, 0);
+		deleteSessionButtonConstraints.gridx = 1;
+		deleteSessionButtonConstraints.gridy = 4;
+		contentPane.add(deleteSessionButton, deleteSessionButtonConstraints);
 
 		errorMessageLabel = new JLabel(" ");
 		errorMessageLabel.setName("errorMessageLabel");
 
-		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-		gbc_lblNewLabel_2.gridwidth = 2;
-		gbc_lblNewLabel_2.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_2.gridx = 0;
-		gbc_lblNewLabel_2.gridy = 5;
-		contentPane.add(errorMessageLabel, gbc_lblNewLabel_2);
+		GridBagConstraints errorMessageLabelConstraints = new GridBagConstraints();
+		errorMessageLabelConstraints.gridwidth = 2;
+		errorMessageLabelConstraints.insets = new Insets(0, 0, 0, 5);
+		errorMessageLabelConstraints.gridx = 0;
+		errorMessageLabelConstraints.gridy = 5;
+		contentPane.add(errorMessageLabel, errorMessageLabelConstraints);
 	}
 
 	DefaultListModel<StudySession> getListSessionsModel() {
@@ -214,6 +213,7 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 
 	@Override
 	public void showTagError(String message, Tag tag) {
+		throw new UnsupportedOperationException("showTagError is not supported by this view");
 	}
 
 	@Override
@@ -229,9 +229,13 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 	}
 
 	@Override
+
 	public void removeStudySession(StudySession studySession) {
+
 		listSessionsModel.removeElement(studySession);
+
 		resetErrorLabel();
+
 	}
 
 	@Override
@@ -247,27 +251,34 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 
 	@Override
 	public void displayTags(List<Tag> tags) {
+	    // Intentionally left blank: tags are managed in TagSwingView.
 	}
 
 	@Override
 	public void addTag(Tag tag) {
+	    // Intentionally left blank: tags are managed in TagSwingView.
 	}
 
 	@Override
 	public void removeTag(Tag tag) {
+	    // Intentionally left blank: tags are managed in TagSwingView.
 	}
 
 	@Override
 	public void updateTag(Tag tag) {
-	}
-
-	@Override
-	public void deleteStudySession(StudySession studySession) {
-		listSessionsModel.removeElement(studySession);
-		resetErrorLabel();
+	    // Intentionally left blank: tags are managed in TagSwingView.
 	}
 
 	@Override
 	public void deleteTag(Tag tag) {
+	    // Intentionally left blank: tags are managed in TagSwingView.
+	}
+
+	@Override
+
+	public void deleteStudySession(StudySession studySession) {
+
+		removeStudySession(studySession);
+
 	}
 }

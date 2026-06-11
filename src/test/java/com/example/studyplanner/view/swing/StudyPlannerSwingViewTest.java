@@ -55,24 +55,18 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
-	@GUITest
 	public void testControlsInitialStates() {
 
 		window.label(JLabelMatcher.withText("id"));
-
 		window.textBox("idTextBox").requireEnabled();
-
 		window.label(JLabelMatcher.withText("description"));
-
 		window.textBox("descriptionTextBox").requireEnabled();
-
 		window.button(JButtonMatcher.withText("Add Session")).requireDisabled();
-
 		window.list("sessionList");
-
 		window.button(JButtonMatcher.withText("Delete Selected")).requireDisabled();
-
 		window.label("errorMessageLabel").requireText(" ");
+
+		assertThat(window.textBox("idTextBox").target().isEnabled()).isTrue();
 	}
 
 	@Test
@@ -82,6 +76,8 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("descriptionTextBox").enterText("Math");
 
 		window.button(JButtonMatcher.withText("Add Session")).requireEnabled();
+
+		assertThat(window.button(JButtonMatcher.withText("Add Session")).target().isEnabled()).isTrue();
 	}
 
 	@Test
@@ -89,8 +85,9 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		window.textBox("idTextBox").enterText("1");
 		window.textBox("descriptionTextBox").enterText(" ");
-
 		window.button(JButtonMatcher.withText("Add Session")).requireDisabled();
+
+		assertThat(window.button(JButtonMatcher.withText("Add Session")).target().isEnabled()).isFalse();
 
 		window.textBox("idTextBox").setText("");
 		window.textBox("descriptionTextBox").setText("");
@@ -99,6 +96,8 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("descriptionTextBox").enterText("Math");
 
 		window.button(JButtonMatcher.withText("Add Session")).requireDisabled();
+
+		assertThat(window.button(JButtonMatcher.withText("Add Session")).target().isEnabled()).isFalse();
 	}
 
 	@Test
@@ -112,13 +111,18 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		window.button(JButtonMatcher.withText("Delete Selected")).requireEnabled();
 
+		assertThat(window.button(JButtonMatcher.withText("Delete Selected")).target().isEnabled()).isTrue();
+
 		window.list("sessionList").clearSelection();
 
 		window.button(JButtonMatcher.withText("Delete Selected")).requireDisabled();
+
+		assertThat(window.button(JButtonMatcher.withText("Delete Selected")).target().isEnabled()).isFalse();
 	}
 
 	@Test
 	public void testDisplayStudySessionsShouldAddSessionsToTheList() {
+
 		StudySession session1 = new StudySession("1", "Math", false, "", null);
 		StudySession session2 = new StudySession("2", "Physics", false, "", null);
 
@@ -135,6 +139,8 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> studyPlannerSwingView.showStudySessionError("error message", session));
 
 		window.label("errorMessageLabel").requireText("error message: " + session);
+
+		assertThat(window.label("errorMessageLabel").target().getText()).isEqualTo("error message: " + session);
 	}
 
 	@Test

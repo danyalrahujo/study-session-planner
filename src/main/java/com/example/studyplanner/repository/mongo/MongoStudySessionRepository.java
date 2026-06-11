@@ -16,7 +16,9 @@ public class MongoStudySessionRepository implements StudySessionRepository {
 	public static final String STUDY_SESSION_COLLECTION_NAME = "studySession";
 
 	public static final String STUDY_PLANNER_DB_NAME = "studyPlanner";
-
+	private static final String ID = "id";
+	private static final String DESCRIPTION = "description";
+	private static final String TAGS = "tags";
 	private MongoCollection<Document> studySessionCollection;
 
 	public MongoStudySessionRepository(MongoClient client) {
@@ -33,8 +35,9 @@ public class MongoStudySessionRepository implements StudySessionRepository {
 
 		Document document = new Document();
 
-		document.append("id", studySession.getId());
-		document.append("description", studySession.getDescription());
+		document.append(ID, studySession.getId());
+
+		document.append(DESCRIPTION, studySession.getDescription());
 		List<String> tagNames = new ArrayList<>();
 
 		if (studySession.getTags() != null) {
@@ -44,8 +47,7 @@ public class MongoStudySessionRepository implements StudySessionRepository {
 			}
 		}
 
-		document.append("tags", tagNames);
-
+		document.append(TAGS, tagNames);
 		studySessionCollection.insertOne(document);
 	}
 
@@ -66,13 +68,20 @@ public class MongoStudySessionRepository implements StudySessionRepository {
 
 	@Override
 	public StudySession findById(String id) {
-		Document document = studySessionCollection.find(new Document("id", id)).first();
+		Document document =
 
+				studySessionCollection.find(new Document(ID, id)).first();
 		if (document == null) {
 			return null;
 		}
 
-		return new StudySession(document.getString("id"), document.getString("description"), false, null, null);
+		return new StudySession(
+
+				document.getString(ID),
+
+				document.getString(DESCRIPTION),
+
+				false, null, null);
 	}
 
 	@Override
@@ -80,16 +89,16 @@ public class MongoStudySessionRepository implements StudySessionRepository {
 
 		Document document = new Document();
 
-		document.append("id", studySession.getId());
-		document.append("description", studySession.getDescription());
+		document.append(ID, studySession.getId());
+		document.append(DESCRIPTION, studySession.getDescription());
 
-		studySessionCollection.replaceOne(Filters.eq("id", studySession.getId()), document);
+		studySessionCollection.replaceOne(Filters.eq(ID, studySession.getId()), document);
 	}
 
 	@Override
 	public void delete(String id) {
 
-		studySessionCollection.deleteOne(Filters.eq("id", id));
+		studySessionCollection.deleteOne(Filters.eq(ID, id));
 	}
 
 	@Override
@@ -99,12 +108,18 @@ public class MongoStudySessionRepository implements StudySessionRepository {
 
 		for (Document document : studySessionCollection.find()) {
 
-			List<String> tags = (List<String>) document.get("tags");
-
+			List<String> tags = (List<String>) document.get(TAGS);
 			if (tags != null && tags.contains(tagId)) {
 
-				StudySession studySession = new StudySession(document.getString("id"),
-						document.getString("description"), false, null, null);
+				StudySession studySession =
+
+						new StudySession(
+
+								document.getString(ID),
+
+								document.getString(DESCRIPTION),
+
+								false, null, null);
 
 				studySessions.add(studySession);
 			}

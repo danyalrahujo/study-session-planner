@@ -78,13 +78,8 @@ public class StudySession {
 	}
 
 	@Override
-    public String toString() {
-        return "StudySession{" +
-						"id='" + id + "'" +
-						", description='" + description + "'" +
-                ", completed=" + completed +
-						", createdAt='" + createdAt + "'" +
-                ", tags=" + tags +
-                '}';
-    }
+	public String toString() {
+		return "StudySession{" + "id='" + id + '\'' + ", description='" + description + '\'' + ", completed="
+				+ completed + ", createdAt='" + createdAt + '\'' + ", tags=" + tags + '}';
+	}
 }
