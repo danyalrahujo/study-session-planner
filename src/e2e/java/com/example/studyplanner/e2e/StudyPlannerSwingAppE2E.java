@@ -30,6 +30,7 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 				return "Study Planner View".equals(frame.getTitle()) && frame.isShowing();
 			}
 		}).using(robot());
+		studyPlannerWindow.focus();
 	}
 
 	@Override
