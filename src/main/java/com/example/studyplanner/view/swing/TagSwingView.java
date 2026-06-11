@@ -87,7 +87,7 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 				TagSwingView frame = new TagSwingView();
 				frame.setVisible(true);
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new IllegalStateException("Failed to start TagSwingView", e);
 			}
 		});
 	}

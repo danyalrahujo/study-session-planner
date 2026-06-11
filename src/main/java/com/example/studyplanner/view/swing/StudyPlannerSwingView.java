@@ -44,7 +44,7 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 				StudyPlannerSwingView frame = new StudyPlannerSwingView();
 				frame.setVisible(true);
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new IllegalStateException("Failed to start StudyPlannerSwingView", e);
 			}
 		});
 	}
@@ -251,27 +251,27 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 
 	@Override
 	public void displayTags(List<Tag> tags) {
-	    // Intentionally left blank: tags are managed in TagSwingView.
+		// Intentionally left blank: tags are managed in TagSwingView.
 	}
 
 	@Override
 	public void addTag(Tag tag) {
-	    // Intentionally left blank: tags are managed in TagSwingView.
+		// Intentionally left blank: tags are managed in TagSwingView.
 	}
 
 	@Override
 	public void removeTag(Tag tag) {
-	    // Intentionally left blank: tags are managed in TagSwingView.
+		// Intentionally left blank: tags are managed in TagSwingView.
 	}
 
 	@Override
 	public void updateTag(Tag tag) {
-	    // Intentionally left blank: tags are managed in TagSwingView.
+		// Intentionally left blank: tags are managed in TagSwingView.
 	}
 
 	@Override
 	public void deleteTag(Tag tag) {
-	    // Intentionally left blank: tags are managed in TagSwingView.
+		// Intentionally left blank: tags are managed in TagSwingView.
 	}
 
 	@Override
