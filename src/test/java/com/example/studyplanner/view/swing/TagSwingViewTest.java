@@ -70,10 +70,8 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testMainMethod() {
-
 		TagSwingView.main(new String[] {});
-
-		await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> assertThat(Frame.getFrames().length).isGreaterThan(0));
+		await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> assertThat(Frame.getFrames()).hasSizeGreaterThan(0));
 	}
 
 	@Test

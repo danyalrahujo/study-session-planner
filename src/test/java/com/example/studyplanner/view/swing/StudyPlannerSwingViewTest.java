@@ -73,7 +73,6 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 				assertThat(java.awt.Frame.getFrames()).hasSizeGreaterThan(0)
 
 				);
-
 	}
 
 	@Test

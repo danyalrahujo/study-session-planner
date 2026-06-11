@@ -172,7 +172,7 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 				() -> assertThat(tagWindow.list("tagList").contents()).anyMatch(e -> e.contains("Java")));
 
 		await().atMost(5, TimeUnit.SECONDS)
-				.untilAsserted(() -> assertThat(tagWindow.list("tagList").contents().length).isGreaterThan(0));
+				.untilAsserted(() -> assertThat(tagWindow.list("tagList").contents()).hasSizeGreaterThan(0));
 
 		tagWindow.list("tagList").selectItem(0);
 
