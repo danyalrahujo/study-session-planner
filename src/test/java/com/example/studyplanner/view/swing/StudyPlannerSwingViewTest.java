@@ -20,6 +20,10 @@ import com.example.studyplanner.controller.StudySessionController;
 import com.example.studyplanner.model.StudySession;
 import com.example.studyplanner.model.Tag;
 
+import static org.awaitility.Awaitility.await;
+
+import java.util.concurrent.TimeUnit;
+
 public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	private StudyPlannerSwingView studyPlannerSwingView;
@@ -55,13 +59,21 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
-	public void testMainMethod() throws Exception {
+
+	public void testMainMethod() {
 
 		StudyPlannerSwingView.main(new String[] {});
 
-		Thread.sleep(500);
+		await()
 
-		assertThat(true).isTrue();
+				.atMost(2, TimeUnit.SECONDS)
+
+				.untilAsserted(() ->
+
+				assertThat(java.awt.Frame.getFrames().length).isGreaterThan(0)
+
+				);
+
 	}
 
 	@Test
@@ -225,13 +237,15 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testTagMethodsDoNothing() {
 
+		int initialSize = studyPlannerSwingView.getListSessionsModel().size();
+
 		studyPlannerSwingView.displayTags(new ArrayList<Tag>());
 		studyPlannerSwingView.addTag(new Tag("1", "Java"));
 		studyPlannerSwingView.removeTag(new Tag("1", "Java"));
 		studyPlannerSwingView.updateTag(new Tag("1", "Java"));
 		studyPlannerSwingView.deleteTag(new Tag("1", "Java"));
 
-		assertThat(studyPlannerSwingView).isNotNull();
+		assertThat(studyPlannerSwingView.getListSessionsModel().size()).isEqualTo(initialSize);
 	}
 
 	@Test
@@ -248,23 +262,6 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withText("Update Session")).click();
 
 		verify(studySessionController).updateStudySession(new StudySession("1", "Physics", false, "", null));
-	}
-
-	@Test
-	public void testUpdateSessionButtonDelegatesToController() {
-
-		StudySession session = new StudySession("1", "Math", false, "", null);
-
-		GuiActionRunner.execute(() -> studyPlannerSwingView.getListSessionsModel().addElement(session));
-
-		window.list("sessionList").selectItem(0);
-
-		window.textBox("descriptionTextBox").setText("Physics");
-
-		window.button(JButtonMatcher.withText("Update Session")).click();
-
-		verify(studySessionController)
-				.updateStudySession(argThat(s -> s.getId().equals("1") && s.getDescription().equals("Physics")));
 	}
 
 	@Test
