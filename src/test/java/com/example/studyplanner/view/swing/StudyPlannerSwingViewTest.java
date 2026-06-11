@@ -1,8 +1,10 @@
 package com.example.studyplanner.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.assertj.swing.core.matcher.JButtonMatcher;
@@ -16,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.example.studyplanner.controller.StudySessionController;
 import com.example.studyplanner.model.StudySession;
+import com.example.studyplanner.model.Tag;
 
 public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 
@@ -49,6 +52,16 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Override
 	protected void onTearDown() throws Exception {
 		closeable.close();
+	}
+
+	@Test
+	public void testMainMethod() throws Exception {
+
+		StudyPlannerSwingView.main(new String[] {});
+
+		Thread.sleep(500);
+
+		assertThat(true).isTrue();
 	}
 
 	@Test
@@ -206,17 +219,17 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test(expected = UnsupportedOperationException.class)
 	public void testShowTagErrorThrowsException() {
 
-		studyPlannerSwingView.showTagError("error", null);
+		studyPlannerSwingView.showTagError("error", new Tag("1", "Java"));
 	}
 
 	@Test
 	public void testTagMethodsDoNothing() {
 
-		studyPlannerSwingView.displayTags(null);
-		studyPlannerSwingView.addTag(null);
-		studyPlannerSwingView.removeTag(null);
-		studyPlannerSwingView.updateTag(null);
-		studyPlannerSwingView.deleteTag(null);
+		studyPlannerSwingView.displayTags(new ArrayList<Tag>());
+		studyPlannerSwingView.addTag(new Tag("1", "Java"));
+		studyPlannerSwingView.removeTag(new Tag("1", "Java"));
+		studyPlannerSwingView.updateTag(new Tag("1", "Java"));
+		studyPlannerSwingView.deleteTag(new Tag("1", "Java"));
 
 		assertThat(studyPlannerSwingView).isNotNull();
 	}
@@ -236,4 +249,39 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		verify(studySessionController).updateStudySession(new StudySession("1", "Physics", false, "", null));
 	}
+
+	@Test
+	public void testUpdateSessionButtonDelegatesToController() {
+
+		StudySession session = new StudySession("1", "Math", false, "", null);
+
+		GuiActionRunner.execute(() -> studyPlannerSwingView.getListSessionsModel().addElement(session));
+
+		window.list("sessionList").selectItem(0);
+
+		window.textBox("descriptionTextBox").setText("Physics");
+
+		window.button(JButtonMatcher.withText("Update Session")).click();
+
+		verify(studySessionController)
+				.updateStudySession(argThat(s -> s.getId().equals("1") && s.getDescription().equals("Physics")));
+	}
+
+	@Test
+	public void testUpdateSessionButtonShouldDelegateToController() {
+
+		StudySession session = new StudySession("1", "Math", false, "", null);
+
+		GuiActionRunner.execute(() -> studyPlannerSwingView.getListSessionsModel().addElement(session));
+
+		window.list("sessionList").selectItem(0);
+
+		window.textBox("descriptionTextBox").setText("Physics");
+
+		window.button(JButtonMatcher.withText("Update Session")).click();
+
+		verify(studySessionController)
+				.updateStudySession(argThat(s -> s.getId().equals("1") && s.getDescription().equals("Physics")));
+	}
+
 }

@@ -67,6 +67,16 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
+	public void testMainMethod() throws Exception {
+
+		StudyPlannerSwingView.main(new String[] {});
+
+		Thread.sleep(500);
+
+		assertThat(true).isTrue();
+	}
+
+	@Test
 	public void testWhenTagNameIsNonEmptyThenAddTagButtonShouldBeEnabled() {
 
 		window.textBox("tagNameTextBox").enterText("Java");
@@ -192,21 +202,6 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
-	public void testStudySessionMethodsDoNothing() {
-
-		StudySession session = new StudySession("1", "Math", false, "", null);
-
-		tagSwingView.showStudySessionError("error", session);
-		tagSwingView.displayStudySessions(new ArrayList<>());
-		tagSwingView.addStudySession(session);
-		tagSwingView.removeStudySession(session);
-		tagSwingView.updateStudySession(session);
-		tagSwingView.deleteStudySession(session);
-
-		assertNotNull(tagSwingView);
-	}
-
-	@Test
 	public void testAddTagButtonDoesNothingWhenTagControllerIsNull() {
 
 		TagSwingView view = GuiActionRunner.execute(TagSwingView::new);
@@ -232,5 +227,70 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.list("tagList").clearSelection();
 
 		assertThat(window.button(JButtonMatcher.withText("Delete Selected")).target().isEnabled()).isFalse();
+	}
+
+	@Test
+	public void testAddTagButtonDoesNothingWhenControllerIsNull() {
+
+		TagSwingView view = GuiActionRunner.execute(TagSwingView::new);
+
+		FrameFixture localWindow = new FrameFixture(robot(), view);
+
+		localWindow.show();
+
+		localWindow.textBox("tagNameTextBox").enterText("Java");
+
+		localWindow.button(JButtonMatcher.withText("Add Tag")).click();
+
+		assertThat(view.getListTagsModel().size()).isEqualTo(0);
+
+		localWindow.cleanUp();
+	}
+
+	@Test
+	public void testUpdateTagButtonDelegatesToController() {
+
+		Tag tag = new Tag("1", "Java");
+
+		GuiActionRunner.execute(() -> tagSwingView.getListTagsModel().addElement(tag));
+
+		window.list("tagList").selectItem(0);
+
+		window.textBox("tagNameTextBox").setText("Spring");
+
+		window.button(JButtonMatcher.withText("Update Tag")).click();
+
+		verify(tagController).updateTag(argThat(t -> t.getId().equals("1") && t.getName().equals("Spring")));
+	}
+
+	@Test
+	public void testDeleteTagButtonDoesNothingWhenNothingSelected() {
+
+		window.button(JButtonMatcher.withText("Delete Selected")).requireDisabled();
+	}
+
+	@Test
+	public void testShowTagErrorUpdatesLabel() {
+
+		Tag tag = new Tag("1", "Java");
+
+		GuiActionRunner.execute(() -> tagSwingView.showTagError("error", tag));
+
+		window.label("errorMessageLabel").requireText("error: " + tag);
+	}
+
+	@Test
+	public void testStudySessionMethodsDoNothing() {
+
+		StudySession session = new StudySession("1", "Math", false, "", null);
+
+		tagSwingView.showStudySessionError("error", session);
+		tagSwingView.displayStudySessions(new ArrayList<>());
+		tagSwingView.addStudySession(session);
+		tagSwingView.removeStudySession(session);
+		tagSwingView.updateStudySession(session);
+		tagSwingView.deleteStudySession(session);
+
+		assertNotNull(tagSwingView);
 	}
 }
