@@ -152,4 +152,16 @@ public class InMemoryStudySessionRepositoryTest {
 
 		assertTrue(inMemoryStudySessionRepository.findByTag("tag999").isEmpty());
 	}
+
+	@Test
+	public void testFindByIdReturnsNullWhenRepositoryContainsDifferentSession() {
+
+		StudySession session = new StudySession("1", "Math", false, "", null);
+
+		inMemoryStudySessionRepository.save(session);
+
+		StudySession result = inMemoryStudySessionRepository.findById("999");
+
+		assertNull(result);
+	}
 }

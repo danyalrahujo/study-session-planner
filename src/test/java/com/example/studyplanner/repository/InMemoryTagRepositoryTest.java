@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class InMemoryTagRepositoryTest {
 
@@ -72,4 +73,37 @@ public class InMemoryTagRepositoryTest {
 
 		assertEquals(0, result.size());
 	}
+
+	@Test
+	public void testFindByIdReturnsNullWhenRepositoryIsEmpty() {
+
+		assertNull(inMemoryTagRepository.findById("999"));
+	}
+
+	@Test
+	public void testFindByIdReturnsNullWhenTagDoesNotExist() {
+
+		Tag tag = new Tag("1", "Programming");
+
+		inMemoryTagRepository.save(tag);
+
+		assertNull(inMemoryTagRepository.findById("999"));
+	}
+
+	@Test
+	public void testUpdateDoesNothingWhenTagDoesNotExist() {
+
+		Tag tag = new Tag("1", "Programming");
+
+		inMemoryTagRepository.save(tag);
+
+		Tag updatedTag = new Tag("999", "Java");
+
+		inMemoryTagRepository.update(updatedTag);
+
+		Tag result = inMemoryTagRepository.findById("1");
+
+		assertEquals("Programming", result.getName());
+	}
+
 }
