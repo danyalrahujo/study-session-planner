@@ -124,4 +124,24 @@ public class TestTagController {
 
 		verify(tagRepository, never()).delete("1");
 	}
+	
+	@Test
+	public void testDeleteNullTag() {
+
+	    tagController.deleteTag(null);
+
+	    verify(tagRepository, never()).delete(org.mockito.ArgumentMatchers.anyString());
+
+	    verify(studyPlannerView, never()).deleteTag(org.mockito.ArgumentMatchers.any());
+	}
+	
+	@Test
+	public void testUpdateNullTag() {
+
+	    tagController.updateTag(null);
+
+	    verify(tagRepository, never()).update(org.mockito.ArgumentMatchers.any());
+
+	    verify(studyPlannerView, never()).updateTag(org.mockito.ArgumentMatchers.any());
+	}
 }
