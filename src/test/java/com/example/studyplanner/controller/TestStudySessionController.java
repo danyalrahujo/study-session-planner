@@ -2,9 +2,9 @@ package com.example.studyplanner.controller;
 
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.never;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -167,5 +167,25 @@ public class TestStudySessionController {
 		verify(studyPlannerView).showStudySessionError("No study session exists with id 1", studySession);
 
 		verify(studySessionRepository, never()).delete("1");
+	}
+
+	@Test
+	public void testDeleteNullStudySession() {
+
+		studySessionController.deleteStudySession(null);
+
+		verify(studySessionRepository, never()).delete(org.mockito.ArgumentMatchers.anyString());
+
+		verify(studyPlannerView, never()).deleteStudySession(org.mockito.ArgumentMatchers.any());
+	}
+
+	@Test
+	public void testUpdateNullStudySession() {
+
+		studySessionController.updateStudySession(null);
+
+		verify(studySessionRepository, never()).update(org.mockito.ArgumentMatchers.any());
+
+		verify(studyPlannerView, never()).updateStudySession(org.mockito.ArgumentMatchers.any());
 	}
 }
