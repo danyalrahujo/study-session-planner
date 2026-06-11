@@ -120,6 +120,7 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 						!idTextBox.getText().trim().isEmpty() && !descriptionTextBox.getText().trim().isEmpty());
 			}
 		};
+
 		idTextBox.addKeyListener(addButtonEnabler);
 		descriptionTextBox.addKeyListener(addButtonEnabler);
 

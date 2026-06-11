@@ -46,6 +46,7 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 	}
 
 	private void focusStudyPlannerWindow() {
+		tagWindow.target().toBack();
 		studyPlannerWindow.target().toFront();
 		studyPlannerWindow.focus();
 		robot().waitForIdle();
@@ -78,7 +79,9 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 	public void testAddSessionSuccess() {
 		focusStudyPlannerWindow();
 
+		studyPlannerWindow.textBox("idTextBox").click();
 		studyPlannerWindow.textBox("idTextBox").enterText("100");
+		studyPlannerWindow.textBox("descriptionTextBox").click();
 		studyPlannerWindow.textBox("descriptionTextBox").enterText("Study Spring");
 		studyPlannerWindow.button("addSessionButton").click();
 
@@ -101,7 +104,9 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 	public void testUpdateSessionSuccess() {
 		focusStudyPlannerWindow();
 
+		studyPlannerWindow.textBox("idTextBox").click();
 		studyPlannerWindow.textBox("idTextBox").enterText("1");
+		studyPlannerWindow.textBox("descriptionTextBox").click();
 		studyPlannerWindow.textBox("descriptionTextBox").enterText("Math");
 		studyPlannerWindow.button("addSessionButton").click();
 		studyPlannerWindow.list("sessionList").selectItem(0);
@@ -116,7 +121,9 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 	public void testDeleteSessionSuccess() {
 		focusStudyPlannerWindow();
 
+		studyPlannerWindow.textBox("idTextBox").click();
 		studyPlannerWindow.textBox("idTextBox").enterText("1");
+		studyPlannerWindow.textBox("descriptionTextBox").click();
 		studyPlannerWindow.textBox("descriptionTextBox").enterText("Math");
 		studyPlannerWindow.button("addSessionButton").click();
 		studyPlannerWindow.list("sessionList").selectItem(0);
