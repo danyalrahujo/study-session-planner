@@ -127,6 +127,10 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 		studyPlannerWindow.textBox("descriptionTextBox").enterText("Math");
 		studyPlannerWindow.button("addSessionButton").click();
 		studyPlannerWindow.list("sessionList").selectItem(0);
+
+		robot().waitForIdle();
+
+		studyPlannerWindow.button("deleteSessionButton").requireEnabled();
 		studyPlannerWindow.button("deleteSessionButton").click();
 
 		assertThat(studyPlannerWindow.list("sessionList").contents()).noneMatch(e -> e.contains("Math"));
@@ -142,7 +146,10 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 		assertThat(tagWindow.list("tagList").contents()).anyMatch(e -> e.contains("Java"));
 
 		tagWindow.list("tagList").selectItem(0);
-		assertThat(tagWindow.button("updateTagButton").target().isEnabled()).isTrue();
+
+		robot().waitForIdle();
+
+		tagWindow.button("updateTagButton").requireEnabled();
 		tagWindow.textBox("tagNameTextBox").setText("Spring");
 		tagWindow.button("updateTagButton").click();
 
@@ -159,8 +166,13 @@ public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
 		assertThat(tagWindow.list("tagList").contents()).anyMatch(e -> e.contains("Java"));
 
 		tagWindow.list("tagList").selectItem(0);
+
+		robot().waitForIdle();
+
+		tagWindow.button("deleteTagButton").requireEnabled();
 		tagWindow.button("deleteTagButton").click();
 
 		assertThat(tagWindow.list("tagList").contents()).noneMatch(e -> e.contains("Java"));
 	}
+
 }

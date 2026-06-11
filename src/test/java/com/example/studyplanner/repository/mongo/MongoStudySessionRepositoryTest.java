@@ -125,4 +125,31 @@ public class MongoStudySessionRepositoryTest {
 
 		assertThat(result).hasSize(1);
 	}
+
+	@Test
+	public void testFindByTagReturnsEmptyWhenTagNotFound() {
+
+		List<Tag> tags = new ArrayList<>();
+		tags.add(new Tag("1", "java"));
+
+		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", tags);
+
+		mongoStudySessionRepository.save(studySession);
+
+		List<StudySession> result = mongoStudySessionRepository.findByTag("spring");
+
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	public void testFindByTagWhenStudySessionHasNoTags() {
+
+		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", null);
+
+		mongoStudySessionRepository.save(studySession);
+
+		List<StudySession> result = mongoStudySessionRepository.findByTag("java");
+
+		assertThat(result).isEmpty();
+	}
 }
