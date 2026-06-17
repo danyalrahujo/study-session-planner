@@ -329,4 +329,60 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.label("errorMessageLabel").requireText("");
 	}
 
+	@Test
+	public void testUpdateTagButtonDoesNothingWhenControllerIsNull() {
+
+		TagSwingView view = GuiActionRunner.execute(TagSwingView::new);
+
+		FrameFixture localWindow = new FrameFixture(robot(), view);
+
+		localWindow.show();
+
+		Tag tag = new Tag("1", "Java");
+
+		GuiActionRunner.execute(() -> view.getListTagsModel().addElement(tag));
+
+		localWindow.list("tagList").selectItem(0);
+
+		localWindow.textBox("tagNameTextBox").setText("Spring");
+
+		localWindow.button(JButtonMatcher.withText("Update Tag")).click();
+
+		assertThat(view.getListTagsModel().size()).isEqualTo(1);
+
+		localWindow.cleanUp();
+	}
+
+	@Test
+	public void testDeleteTagButtonDoesNothingWhenControllerIsNull() {
+
+		TagSwingView view = GuiActionRunner.execute(TagSwingView::new);
+
+		FrameFixture localWindow = new FrameFixture(robot(), view);
+
+		localWindow.show();
+
+		Tag tag = new Tag("1", "Java");
+
+		GuiActionRunner.execute(() -> view.getListTagsModel().addElement(tag));
+
+		localWindow.list("tagList").selectItem(0);
+
+		localWindow.button(JButtonMatcher.withText("Delete Selected")).click();
+
+		assertThat(view.getListTagsModel().size()).isEqualTo(1);
+
+		localWindow.cleanUp();
+	}
+
+	@Test
+	public void testUpdateTagDoesNothingWhenNoSelectionExists() {
+
+		Tag tag = new Tag("1", "Updated");
+
+		GuiActionRunner.execute(() -> tagSwingView.updateTag(tag));
+
+		assertThat(tagSwingView.getListTagsModel().isEmpty()).isTrue();
+	}
+
 }
