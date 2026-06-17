@@ -311,4 +311,22 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 		assertThat(tagSwingView.getListTagsModel().size()).isEqualTo(initialSize);
 	}
 
+	@Test
+	public void testDeleteTagShouldDelegateToRemoveTag() {
+
+		Tag tag1 = new Tag("1", "Java");
+		Tag tag2 = new Tag("2", "Spring");
+
+		GuiActionRunner.execute(() -> {
+			tagSwingView.getListTagsModel().addElement(tag1);
+			tagSwingView.getListTagsModel().addElement(tag2);
+		});
+
+		GuiActionRunner.execute(() -> tagSwingView.deleteTag(tag1));
+
+		assertThat(window.list("tagList").contents()).containsExactly(tag2.toString());
+
+		window.label("errorMessageLabel").requireText("");
+	}
+
 }
