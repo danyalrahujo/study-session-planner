@@ -1,12 +1,4 @@
-target/
-bin/
-.settings/
-.classpath
-.project
-.factorypath
-*.log
-*.tmp
-*.jar
-*.war
-*.ear
+/target/
+/failed-gui-tests/
+*.class
 .DS_Store
