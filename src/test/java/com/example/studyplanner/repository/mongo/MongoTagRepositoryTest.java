@@ -86,6 +86,12 @@ public class MongoTagRepositoryTest {
 	}
 
 	@Test
+	public void testFindByIdReturnsNullWhenTagDoesNotExist() {
+
+		assertThat(mongoTagRepository.findById("missing")).isNull();
+	}
+
+	@Test
 	public void testUpdate() {
 
 		Tag tag = new Tag("1", "java");

@@ -83,12 +83,8 @@ public class TagSwingView extends JFrame implements StudyPlannerView {
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
-			try {
-				TagSwingView frame = new TagSwingView();
-				frame.setVisible(true);
-			} catch (Exception e) {
-				throw new IllegalStateException("Failed to start TagSwingView", e);
-			}
+			TagSwingView frame = new TagSwingView();
+			frame.setVisible(true);
 		});
 	}
 

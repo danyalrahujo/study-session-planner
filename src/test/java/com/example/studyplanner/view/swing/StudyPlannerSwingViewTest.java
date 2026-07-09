@@ -1,7 +1,9 @@
 package com.example.studyplanner.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
@@ -278,6 +280,55 @@ public class StudyPlannerSwingViewTest extends AssertJSwingJUnitTestCase {
 
 		verify(studySessionController)
 				.updateStudySession(argThat(s -> s.getId().equals("1") && s.getDescription().equals("Physics")));
+	}
+
+	@Test
+	public void testUpdateSessionButtonDoesNothingWhenNoSessionIsSelected() {
+
+		GuiActionRunner.execute(
+				() -> window.button(JButtonMatcher.withText("Update Session")).target().setEnabled(true));
+
+		window.button(JButtonMatcher.withText("Update Session")).click();
+
+		verify(studySessionController, never()).updateStudySession(any(StudySession.class));
+	}
+
+	@Test
+	public void testDeleteStudySessionRemovesSessionFromList() {
+
+		StudySession session1 = new StudySession("1", "Math", false, "", null);
+		StudySession session2 = new StudySession("2", "Physics", false, "", null);
+
+		GuiActionRunner.execute(() -> {
+			studyPlannerSwingView.getListSessionsModel().addElement(session1);
+			studyPlannerSwingView.getListSessionsModel().addElement(session2);
+		});
+
+		GuiActionRunner.execute(() -> studyPlannerSwingView.deleteStudySession(session1));
+
+		assertThat(window.list("sessionList").contents()).containsExactly(session2.toString());
+	}
+
+	@Test
+	public void testUpdateStudySessionWhenSelectionExistsUpdatesTheListElement() {
+		StudySession session1 = new StudySession("1", "Math", false, "", null);
+		StudySession updatedSession = new StudySession("1", "Advanced Math", false, "", null);
+
+		GuiActionRunner.execute(() -> studyPlannerSwingView.getListSessionsModel().addElement(session1));
+		window.list("sessionList").selectItem(0);
+
+		GuiActionRunner.execute(() -> studyPlannerSwingView.updateStudySession(updatedSession));
+
+		assertThat(window.list("sessionList").contents()).containsExactly(updatedSession.toString());
+	}
+
+	@Test
+	public void testUpdateStudySessionDoesNothingWhenNoSelectionExists() {
+		StudySession updatedSession = new StudySession("1", "Advanced Math", false, "", null);
+
+		GuiActionRunner.execute(() -> studyPlannerSwingView.updateStudySession(updatedSession));
+
+		assertThat(studyPlannerSwingView.getListSessionsModel().isEmpty()).isTrue();
 	}
 
 }

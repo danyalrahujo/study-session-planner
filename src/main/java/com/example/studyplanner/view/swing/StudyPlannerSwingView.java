@@ -40,12 +40,8 @@ public class StudyPlannerSwingView extends JFrame implements StudyPlannerView {
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
-			try {
-				StudyPlannerSwingView frame = new StudyPlannerSwingView();
-				frame.setVisible(true);
-			} catch (Exception e) {
-				throw new IllegalStateException("Failed to start StudyPlannerSwingView", e);
-			}
+			StudyPlannerSwingView frame = new StudyPlannerSwingView();
+			frame.setVisible(true);
 		});
 	}
 

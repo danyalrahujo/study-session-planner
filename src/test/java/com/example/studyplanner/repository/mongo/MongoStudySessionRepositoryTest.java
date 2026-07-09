@@ -12,6 +12,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.bson.Document;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -83,6 +84,12 @@ public class MongoStudySessionRepositoryTest {
 	}
 
 	@Test
+	public void testFindByIdReturnsNullWhenStudySessionDoesNotExist() {
+
+		assertThat(mongoStudySessionRepository.findById("missing")).isNull();
+	}
+
+	@Test
 	public void testUpdate() {
 
 		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", null);
@@ -147,6 +154,18 @@ public class MongoStudySessionRepositoryTest {
 		StudySession studySession = new StudySession("1", "Study TDD", false, "2025-05-10", null);
 
 		mongoStudySessionRepository.save(studySession);
+
+		List<StudySession> result = mongoStudySessionRepository.findByTag("java");
+
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	public void testFindByTagWhenStoredDocumentHasNoTagsField() {
+
+		client.getDatabase(MongoStudySessionRepository.STUDY_PLANNER_DB_NAME)
+				.getCollection(MongoStudySessionRepository.STUDY_SESSION_COLLECTION_NAME)
+				.insertOne(new Document("id", "1").append("description", "Study TDD"));
 
 		List<StudySession> result = mongoStudySessionRepository.findByTag("java");
 

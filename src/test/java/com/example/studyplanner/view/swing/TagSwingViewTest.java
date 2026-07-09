@@ -2,7 +2,9 @@ package com.example.studyplanner.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import java.awt.Frame;
@@ -183,6 +185,16 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
+	public void testAddTagButtonDoesNothingWhenTagNameIsBlank() {
+
+		GuiActionRunner.execute(() -> window.button(JButtonMatcher.withText("Add Tag")).target().setEnabled(true));
+
+		window.button(JButtonMatcher.withText("Add Tag")).click();
+
+		verify(tagController, never()).addTag(any(Tag.class));
+	}
+
+	@Test
 	public void testDeleteTagButtonShouldDelegateToTagControllerDeleteTag() {
 		Tag tag1 = new Tag("1", "Java");
 		Tag tag2 = new Tag("2", "Spring");
@@ -261,11 +273,24 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
+	public void testUpdateTagButtonDoesNothingWhenNoTagIsSelected() {
+
+		GuiActionRunner.execute(() -> window.button(JButtonMatcher.withText("Update Tag")).target().setEnabled(true));
+
+		window.button(JButtonMatcher.withText("Update Tag")).click();
+
+		verify(tagController, never()).updateTag(any(Tag.class));
+	}
+
+	@Test
 	public void testDeleteTagButtonDoesNothingWhenNothingSelected() {
 
-		window.button(JButtonMatcher.withText("Delete Selected")).requireDisabled();
+		GuiActionRunner.execute(
+				() -> window.button(JButtonMatcher.withText("Delete Selected")).target().setEnabled(true));
 
-		assertThat(window.button(JButtonMatcher.withText("Delete Selected")).target().isEnabled()).isFalse();
+		window.button(JButtonMatcher.withText("Delete Selected")).click();
+
+		verify(tagController, never()).deleteTag(any(Tag.class));
 	}
 
 	@Test
@@ -383,6 +408,20 @@ public class TagSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> tagSwingView.updateTag(tag));
 
 		assertThat(tagSwingView.getListTagsModel().isEmpty()).isTrue();
+	}
+
+	@Test
+	public void testUpdateTagWhenSelectionExistsUpdatesTheListElement() {
+		Tag tag1 = new Tag("1", "Java");
+		Tag updatedTag = new Tag("1", "Java 17");
+
+		GuiActionRunner.execute(() -> tagSwingView.getListTagsModel().addElement(tag1));
+		window.list("tagList").selectItem(0);
+
+		GuiActionRunner.execute(() -> tagSwingView.updateTag(updatedTag));
+
+		assertThat(window.list("tagList").contents()).containsExactly(updatedTag.toString());
+		assertThat(window.textBox("tagNameTextBox").target().getText()).isEmpty();
 	}
 
 }
