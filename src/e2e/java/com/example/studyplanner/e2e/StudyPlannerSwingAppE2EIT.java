@@ -94,6 +94,7 @@ public class StudyPlannerSwingAppE2EIT extends AssertJSwingJUnitTestCase {
 	public void testAddTagSuccess() {
 		focusTagWindow();
 
+		tagWindow.textBox("tagNameTextBox").click();
 		tagWindow.textBox("tagNameTextBox").enterText("Java");
 		tagWindow.button("addTagButton").click();
 
