@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
 import org.junit.Ignore;
 
 @RunWith(GUITestRunner.class)
-public class StudyPlannerSwingAppE2E extends AssertJSwingJUnitTestCase {
+public class StudyPlannerSwingAppE2EIT extends AssertJSwingJUnitTestCase {
 
 	private FrameFixture studyPlannerWindow;
 	private FrameFixture tagWindow;
